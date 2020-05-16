@@ -1,1 +1,21 @@
 <h1>hello, world</h1>
+<div class="sidebar">
+  <div class="add-new-retro-item">
+    <form #newItemForm="ngForm" (submit)="addItem(newItemForm.value)">
+      <div *ngFor="let area of areas">
+        <input type="radio" name="area" value="{{area}}" ngModel />
+        <label for="{{area}}">{{area}}</label>
+        </div>
+      <input type="text" name="text" ngModel />
+      <input type="submit" />
+    </form>
+  </div>
+  <div class="retro-item-container">
+    <div *ngFor="let item of retroItems">
+      {{item.area}} | {{item.text}}
+    </div>
+  </div>
+</div>
+<!--<div class="main-view">
+  categories here
+</div>-->

@@ -13,6 +13,8 @@ import { HomeComponent } from './home/home.component';
 import { BoardComponent } from './components/board/board.component';
 import { ComposerComponent } from './components/composer/composer.component';
 
+import { GroupingComponent } from './grouping/grouping.component';
+
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { ComposerComponent } from './components/composer/composer.component';
     SetupComponent,
     HomeComponent,
     BoardComponent,
-    ComposerComponent
+    ComposerComponent,
+    GroupingComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -31,6 +34,7 @@ import { ComposerComponent } from './components/composer/composer.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'setup', component: SetupComponent },
+      { path: 'grouping', component: GroupingComponent },
     ])
   ],
   providers: [],

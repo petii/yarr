@@ -1,0 +1,17 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col" *ngFor="let area of areas">
+      {{area}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col" *ngFor="let area of areas">
+      <div class="container">
+        <div class="row" *ngFor="let areaItem of retroBoard.get(area)">
+          {{areaItem}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

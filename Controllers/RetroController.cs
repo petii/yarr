@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using YetAnotherRetroRegulator.Data;
 using YetAnotherRetroRegulator.Types;
 
@@ -14,10 +15,11 @@ namespace YetAnotherRetroRegulator.Controllers
 
 	public class RetroController : Controller
 	{
-		public RetroData Retro;
+		private RetroData Retro;
 		public RetroController(RetroData retroData)
 		{
 			Retro = retroData;
+			Retro.LastPublished = DateTime.Now;
 		}
 
 		// GET: api/<controller>
@@ -27,26 +29,36 @@ namespace YetAnotherRetroRegulator.Controllers
 			return new string[] { "hello", ",", "world" };
 		}
 
-		[Route("areas")]
+		[Route("lastupdate")]
 		[HttpGet]
-		public string[] GetAreas()
+		public DateTime GetLastPublished()
 		{
-			return new string[] { "glad", "sad", "idea" };
+			return Retro.LastPublished;
 		}
 
 		[Route("setup")]
 		[HttpGet]
-		public Dictionary<string, string[]> GetSetup()
+		public RetroSetup GetSetup()
 		{
-			return new Dictionary<string, string[]> { };
+			return new RetroSetup() { Areas = Retro.Areas, Votes = Retro.AvailableVotes };
 		}
 
 		[Route("setup")]
 		[HttpPut]
-		public ActionResult<RetroSetup> PostSetup([FromBody] RetroSetup value)
+		public ActionResult<RetroSetup> PutSetup([FromBody] RetroSetup value)
 		{
+			Retro.Areas = value.Areas;
+			Retro.AvailableVotes = value.Votes;
 			return value;
 		}
 
+		[Route("publish")]
+		[HttpPost]
+		public ActionResult<RetroItem> PublishItem([FromBody] RetroItem value)
+		{
+			Retro.Items.Append(value);
+			Retro.LastPublished = DateTime.Now;
+			return value;
+		}
 	}
 }

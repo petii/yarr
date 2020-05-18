@@ -8,10 +8,10 @@ namespace YetAnotherRetroRegulator.Data
 {
 	public class RetroData
 	{
-		public DateTime LastPublished;
+		public DateTime LastPublished = DateTime.Now;
 
 		public int AvailableVotes = 3;
 		public string[] Areas = { };
-		public RetroItem[] Items = { };
+		public List<RetroItem> Items = new List<RetroItem> { };
 	}
 }

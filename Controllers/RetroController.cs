@@ -11,54 +11,60 @@ using YetAnotherRetroRegulator.Types;
 
 namespace YetAnotherRetroRegulator.Controllers
 {
-	[Route("api/[controller]")]
+  [Route("api/[controller]")]
 
-	public class RetroController : Controller
-	{
-		private RetroData Retro;
-		public RetroController(RetroData retroData)
-		{
-			Retro = retroData;
-			Retro.LastPublished = DateTime.Now;
-		}
+  public class RetroController : Controller
+  {
+    private RetroData Retro;
+    public RetroController(RetroData retroData)
+    {
+      Retro = retroData;
+    }
 
-		// GET: api/<controller>
-		[HttpGet]
-		public IEnumerable<string> Get()
-		{
-			return new string[] { "hello", ",", "world" };
-		}
+    // GET: api/<controller>
+    [HttpGet]
+    public IEnumerable<string> Get()
+    {
+      return new string[] { "hello", ",", "world" };
+    }
 
-		[Route("lastupdate")]
-		[HttpGet]
-		public DateTime GetLastPublished()
-		{
-			return Retro.LastPublished;
-		}
+    [Route("lastupdate")]
+    [HttpGet]
+    public DateTime GetLastPublished()
+    {
+      return Retro.LastPublished;
+    }
 
-		[Route("setup")]
-		[HttpGet]
-		public RetroSetup GetSetup()
-		{
-			return new RetroSetup() { Areas = Retro.Areas, Votes = Retro.AvailableVotes };
-		}
+    [Route("setup")]
+    [HttpGet]
+    public RetroSetup GetSetup()
+    {
+      return new RetroSetup() { Areas = Retro.Areas, Votes = Retro.AvailableVotes };
+    }
 
-		[Route("setup")]
-		[HttpPut]
-		public ActionResult<RetroSetup> PutSetup([FromBody] RetroSetup value)
-		{
-			Retro.Areas = value.Areas;
-			Retro.AvailableVotes = value.Votes;
-			return value;
-		}
+    [Route("setup")]
+    [HttpPut]
+    public ActionResult<RetroSetup> PutSetup([FromBody] RetroSetup value)
+    {
+      Retro.Areas = value.Areas;
+      Retro.AvailableVotes = value.Votes;
+      return value;
+    }
 
-		[Route("publish")]
-		[HttpPost]
-		public ActionResult<RetroItem> PublishItem([FromBody] RetroItem value)
-		{
-			Retro.Items.Append(value);
-			Retro.LastPublished = DateTime.Now;
-			return value;
-		}
-	}
+    [Route("publish")]
+    [HttpPost]
+    public ActionResult<RetroItem> PublishItem([FromBody] RetroItem value)
+    {
+      Retro.Items.Add(value);
+      Retro.LastPublished = DateTime.Now;
+      return value;
+    }
+
+    [Route("items")]
+    [HttpGet]
+    public Update GetItems()
+    {
+      return new Update(Retro.LastPublished, Retro.Items.ToArray());
+    }
+  }
 }

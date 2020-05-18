@@ -1,19 +1,22 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
-import { Subject, timer, Observable } from 'rxjs';
+import { Subject, timer, Observable, interval, Subscription } from 'rxjs';
 
 import { UsernameService } from '../services/username.service';
+import { KeyValue } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, OnDestroy {
   public areas: string[]
   public retroItems: RetroItem[];
 
   public retroBoard = new Map<string, string[]>();
+
+  private lastUpdate = new Date();
 
   private refreshTimer: Observable<number>;
 
@@ -26,15 +29,12 @@ export class HomeComponent {
       });
       result.areas.forEach(area => this.retroBoard.set(area, []));
       console.log(this.retroBoard);
+      http.get<UpdateType>(`${baseUrl}api/retro/items`).subscribe(result => this.processRetroItems(result));
     });
 
     usernameService.usernameSubject().subscribe({ next: newName => { console.log(`recieved ${newName}`); } });
 
-    this.refreshTimer = timer(100, 1000);
-    this.refreshTimer.subscribe(val => {
-      //console.log(val);
-      http.get(`${baseUrl}api/retro/lastupdate`).subscribe(result => console.log(result));
-    })
+    this.refreshTimer = interval(1000);
   };
 
   addItem(newitemForm: NgForm) {
@@ -61,17 +61,45 @@ export class HomeComponent {
     let publishedItem: PublishedRetroItem = { area: tmp.area, text: tmp.text };
     console.log(JSON.stringify(publishedItem));
     // TODO: error case
-    this.http.post(`${this.baseUrl}api/retro/publish`, JSON.stringify(publishedItem), { headers : headers }).subscribe(result => {
+    this.http.post(`${this.baseUrl}api/retro/publish`, JSON.stringify(publishedItem), { headers: headers }).subscribe(result => {
       this.retroBoard.get(publishedItem.area).push(publishedItem.text);
       this.removeItem(id);
     });
   }
+
+  processRetroItems(update: UpdateType) {
+    console.log(update)
+    //console.log(typeof(update.serverTime));
+    //console.log(typeof(update.items))
+    //this.lastUpdate = update.serverTime;
+    //update.items.forEach(item => { this.retroBoard.get(item.area).push(item.text); });
+  }
+
+  private timerSubscription: Subscription;
+
+  ngOnInit() {
+    this.timerSubscription = this.refreshTimer.subscribe(val => {
+      this.http.get<Date>(`${this.baseUrl}api/retro/lastupdate`).subscribe(result => {
+        console.log(`${result} > ${this.lastUpdate} = ${this.lastUpdate < result}`);
+      });
+    })
+  }
+
+  ngOnDestroy() {
+    this.timerSubscription.unsubscribe();
+  }
+
 }
 
 export class RetroItem {
   id?: number
   text: string;
   area: string;
+}
+
+interface UpdateType {
+  serverTime: Date;
+  items: PublishedRetroItem[];
 }
 
 interface PublishedRetroItem {

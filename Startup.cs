@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using YetAnotherRetroRegulator.Data;
 
 namespace YetAnotherRetroRegulator
 {
@@ -25,6 +26,8 @@ namespace YetAnotherRetroRegulator
 			{
 				configuration.RootPath = "ClientApp/dist";
 			});
+
+			services.AddSingleton<RetroData>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,10 +59,10 @@ namespace YetAnotherRetroRegulator
 
 			app.UseSpa(spa =>
 			{
-							// To learn more about options for serving an Angular SPA from ASP.NET Core,
-							// see https://go.microsoft.com/fwlink/?linkid=864501
+				// To learn more about options for serving an Angular SPA from ASP.NET Core,
+				// see https://go.microsoft.com/fwlink/?linkid=864501
 
-							spa.Options.SourcePath = "ClientApp";
+				spa.Options.SourcePath = "ClientApp";
 
 				if (env.IsDevelopment())
 				{

@@ -1,16 +1,14 @@
 <h1>Retrospective Setup</h1>
-<form #retroSetupForm="ngForm" (submit)="updateRetroSettings(retroSetupForm)">
+
+<form [formGroup]="setupForm" (ngSubmit)="updateRetroSettings()" >
   <h2>Areas</h2>
-  <div class="area-container">
-    <div *ngFor="let area of areas">
-      <input type="text" value="{{area.name}}" />
-      <button type="button" (click)="removeArea(area.id)">x</button>
-    </div>
-    <button type="button" (click)="newArea()">add new</button>
+  <div formArrayName="areas" *ngFor="let area of setupForm.controls.areas.controls; index as i">
+    <input placeholder="Area Name" value="{{area.value}}" formControlName="{{i}}" />
+    <input type="button" (click)="removeArea(i)" value="x" />
   </div>
-  <div>
-    <h2>Maximum votes</h2>
-    <input type="number" value="{{votes}}"/>
-  </div>
+  <input type="button" (click)="newArea()" value="Add new area">
+  <h2>Max Votes</h2>
+  <input type="number" formControlName="votes" />
+
   <input type="submit" />
 </form>

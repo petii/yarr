@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public retroBoard = new Map<string, string[]>();
 
-  private lastUpdate = new Date();
+  private lastUpdate = new Date(0);
 
   private refreshTimer: Observable<number>;
 
@@ -69,18 +69,20 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   processRetroItems(update: UpdateType) {
     console.log(update)
-    //console.log(typeof(update.serverTime));
-    //console.log(typeof(update.items))
-    //this.lastUpdate = update.serverTime;
-    //update.items.forEach(item => { this.retroBoard.get(item.area).push(item.text); });
+    this.lastUpdate = new Date(Date.parse(update.timestamp));
+    this.areas.forEach(area => this.retroBoard.set(area, []));
+    update.items.forEach(item => this.retroBoard.get(item.area).push(item.text));
   }
 
   private timerSubscription: Subscription;
 
   ngOnInit() {
     this.timerSubscription = this.refreshTimer.subscribe(val => {
-      this.http.get<Date>(`${this.baseUrl}api/retro/lastupdate`).subscribe(result => {
-        console.log(`${result} > ${this.lastUpdate} = ${this.lastUpdate < result}`);
+      this.http.get<string>(`${this.baseUrl}api/retro/lastupdate`).subscribe(result => {
+        let recieved: Date = new Date(Date.parse(result));
+        if (this.lastUpdate < recieved) {
+          this.http.get<UpdateType>(`${this.baseUrl}api/retro/items`).subscribe(result => this.processRetroItems(result));
+        }
       });
     })
   }
@@ -98,7 +100,7 @@ export class RetroItem {
 }
 
 interface UpdateType {
-  serverTime: Date;
+  timestamp: string;
   items: PublishedRetroItem[];
 }
 

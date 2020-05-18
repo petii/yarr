@@ -2,47 +2,10 @@
   <h1>hello, world</h1>
   <div class="row">
     <div class="col">
-      <div class="sidebar">
-        <div class="form-group add-new-retro-item">
-          <form #newItemForm="ngForm" (submit)="addItem(newItemForm)">
-            <div *ngFor="let area of areas">
-              <input type="radio" name="area" value="{{area}}" id="{{area}}" ngModel required>
-              <label for="{{area}}">{{area}}</label>
-            </div>
-            <textarea class="form-control" name="text" ngModel required></textarea>
-            <input type="submit" />
-          </form>
-        </div>
-        <div class="container retro-item-container">
-          <div class="row" *ngFor="let item of retroItems">
-            <div class="col">{{item.area}}</div>
-            <div class="col">{{item.text}}</div>
-            <div class="col">
-              <button type="button" (click)="removeItem(item.id)">delete</button>
-              <button type="button" (click)="publishItem(item.id)">publish</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <retro-item-composer [areas]="areas"></retro-item-composer>
     </div>
     <div class="col">
       <retro-board [areas]="areas"></retro-board>
-      <!--<div class="container">
-        <div class="row">
-          <div class="col" *ngFor="let area of areas">
-            {{area}}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col" *ngFor="let area of areas">
-            <div class="container">
-              <div class="row" *ngFor="let areaItem of retroBoard.get(area)">
-                 {{areaItem}}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>-->
     </div>
   </div>
 </div>

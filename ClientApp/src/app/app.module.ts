@@ -11,6 +11,7 @@ import { SetupComponent } from './setup/setup.component';
 
 import { HomeComponent } from './home/home.component';
 import { BoardComponent } from './components/board/board.component';
+import { ComposerComponent } from './components/composer/composer.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { BoardComponent } from './components/board/board.component';
     NavMenuComponent,
     SetupComponent,
     HomeComponent,
-    BoardComponent
+    BoardComponent,
+    ComposerComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

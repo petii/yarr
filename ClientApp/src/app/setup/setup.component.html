@@ -1,0 +1,16 @@
+<h1>Retrospective Setup</h1>
+<form #retroSetupForm="ngForm" (submit)="updateRetroSettings(retroSetupForm)">
+  <h2>Areas</h2>
+  <div class="area-container">
+    <div *ngFor="let area of areas">
+      <input type="text" value="{{area.name}}" />
+      <button type="button" (click)="removeArea(area.id)">x</button>
+    </div>
+    <button type="button" (click)="newArea()">add new</button>
+  </div>
+  <div>
+    <h2>Maximum votes</h2>
+    <input type="number" value="{{votes}}"/>
+  </div>
+  <input type="submit" />
+</form>

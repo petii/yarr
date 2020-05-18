@@ -20,10 +20,10 @@ export class HomeComponent {
     http.get<string[]>(baseUrl + 'api/retro/areas').subscribe(result => {
       this.areas = result;
 
-      let item1 = {id: 1, text: "item1", area: this.areas[0] };
-      let item2 = {id: 2, text: "item2", area: this.areas[1] };
-      let item3 = {id: 3, text: "item3", area: this.areas[2] };
-      this.retroItems = [item1, item2, item3];
+      // for testing purposes
+      this.retroItems = this.areas.map((value, index) => {
+        return { id: index, text: `item${index}`, area: value };
+      });
     });
 
     usernameService.usernameSubject().subscribe({ next: newName => { console.log(`recieved ${newName}`); } });

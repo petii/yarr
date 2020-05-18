@@ -22,11 +22,6 @@ export class NavMenuComponent {
   }
 
   nameChange(newName: string) {
-    if (newName.length == 0) {
-      console.log('empty name');
-      this.user = ' ';
-      return;
-    }
     this.usernameService.setUsername(newName);
   }
 }

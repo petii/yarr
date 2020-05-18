@@ -1,11 +1,13 @@
 import { Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
+import { Subject } from 'rxjs';
+
+import { UsernameService } from '../services/username.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-
 })
 export class HomeComponent {
   public areas: string[]
@@ -13,7 +15,8 @@ export class HomeComponent {
 
   public retroTable: RetroItem[];
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string,
+              private usernameService: UsernameService) {
     http.get<string[]>(baseUrl + 'api/retro/areas').subscribe(result => {
       this.areas = result;
 
@@ -22,6 +25,8 @@ export class HomeComponent {
       let item3 = {id: 3, text: "item3", area: this.areas[2] };
       this.retroItems = [item1, item2, item3];
     });
+
+    usernameService.usernameSubject().subscribe({ next: newName => { console.log(`recieved ${newName}`); } });
   };
 
   addItem(newitemForm: NgForm) {

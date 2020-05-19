@@ -15,5 +15,7 @@ namespace YetAnotherRetroRegulator.Data
     public List<RetroItem> Items = new List<RetroItem> { };
 
     public List<GroupType> Groups = new List<GroupType> { };
+
+    public List<int> Votes = new List<int> { };
   }
 }

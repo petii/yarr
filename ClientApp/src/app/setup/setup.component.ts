@@ -16,7 +16,7 @@ export class SetupComponent {
   ) {
     this.setupForm = this.fb.group({
       votes: 5,
-      areas: this.fb.array([this.fb.control('area1'), this.fb.control('area2')])
+      areas: this.fb.array([this.fb.control('glad'), this.fb.control('sad')])
     });
   }
 

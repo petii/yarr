@@ -86,5 +86,14 @@ namespace YetAnotherRetroRegulator.Controllers
       Retro.LastPublished = DateTime.Now;
       return data.Group;
     }
+
+    [Route("vote")]
+    [HttpPost]
+    public int[] Vote([FromBody]int[] votes)
+    {
+      Retro.Votes.AddRange(votes);
+      Retro.LastPublished = DateTime.Now;
+      return votes;
+    }
   }
 }

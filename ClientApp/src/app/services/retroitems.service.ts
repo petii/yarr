@@ -47,7 +47,6 @@ export interface PublishedRetroItem {
   area: string;
   text: string;
   group?: Group;
-  voteCount?: number;
 }
 
 export interface UpdateType {

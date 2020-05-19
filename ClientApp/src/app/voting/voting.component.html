@@ -1,15 +1,37 @@
 <div class="container">
-  <h2>let's get ready to rumble</h2><input type="button" value="save votes" (click)="saveVotes()">
+  <h2>let's get ready to rumble</h2>
+  <div>
+    Your votes:
+    <span *ngFor="let id of votes">
+      {{id}}
+    </span>
+  </div>
+  <input *ngIf="!voted" type="button" value="submit votes" (click)="saveVotes()">
   <div class="row">
     <div class="col">
       <h3>Groups</h3>
       <div class="container">
         <div class="row" *ngFor="let group of groups">
-          <h4 *ngIf="getGroupItems(group.id).length > 0" (blur)="groupNameChange(group, $event.target.innerHTML)" contenteditable="true">{{group.name}}</h4>
+          <h4 *ngIf="getGroupItems(group.id).length > 0"
+              (blur)="groupNameChange(group, $event.target.innerHTML)"
+              contenteditable="true">
+            {{group.name}}
+          </h4>
           <div class="container">
-            <div class="row" *ngFor="let groupItem of getGroupItems(group.id)">
-              {{groupItem.text}}
-              <input type="button" (click)="kickFromGroup(groupItem)" value="kick" />
+            <div class="row" *ngFor="let item of getGroupItems(group.id)">
+              <div class="col">
+                {{item.area}}
+              </div>
+              <div class="col">
+                {{item.text}}
+              </div>
+              <div class="col">
+                <input type="button" (click)="kickFromGroup(item)" value="kick" />
+              </div>
+              <div class="col" *ngIf="!voted">
+                <input *ngIf="canRemoveVote(item)" type="button" value="-" (click)="removeVote(item)" />
+                <input *ngIf="canAddVote(item)" type="button" value="+" (click)="addVote(item)" />
+              </div>
             </div>
           </div>
         </div>
@@ -32,11 +54,9 @@
               <option value="-1">New Group</option>
             </select>
           </div>
-          <div class="col" >
-            <input *ngIf="!item.voteCount && availableVotes > 0" type="button" value="vote" (click)="addVote(item)" />
-            <input *ngIf="item.voteCount && item.voteCount > 0" type="button" value="-" (click)="removeVote(item)" />
-            <span *ngIf="item.voteCount">{{item.voteCount}}</span>
-            <input *ngIf="item.voteCount && availableVotes > 0" type="button" value="+" (click)="addVote(item)" />
+          <div class="col">
+            <input *ngIf="canRemoveVote(item)" type="button" value="-" (click)="removeVote(item)" />
+            <input *ngIf="canAddVote(item)" type="button" value="+" (click)="addVote(item)" />
           </div>
         </div>
       </div>

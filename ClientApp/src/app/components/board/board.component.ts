@@ -1,37 +1,30 @@
-import { Component, Input, OnInit, OnDestroy, Inject } from '@angular/core';
-import { Observable, Subscription, interval } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
-import { PublishedRetroItem } from '../../home/home.component'
 import { RetroItemsService } from '../../services/retroitems.service';
+import { PublishedRetroItem } from '../../home/home.component'
 
 @Component({
   selector: 'retro-board',
   templateUrl: './board.component.html',
 })
-export class BoardComponent implements OnInit, OnDestroy {
-  @Input() areas: string[]
+export class BoardComponent {
+  @Input() areas: string[];
+  @Input() items: PublishedRetroItem[];
+
   public retroBoard = new Map<string, string[]>();
 
-  private itemSubscription: Subscription;
-
-  constructor(
-    private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
-    private retroItemsService: RetroItemsService) { }
-
-  processRetroItems(update: PublishedRetroItem[]) {
-    console.log(update)
-    this.areas.forEach(area => this.retroBoard.set(area, []));
-    update.forEach(item => this.retroBoard.get(item.area).push(item.text));
+  processRetroItems() {
+    // whatever happened to optional chaining
+    if (this.areas) {
+      this.areas.forEach(area => this.retroBoard.set(area, []));
+    }
+    if (this.items) {
+      this.items.forEach(item => {
+        if (this.retroBoard.has(item.area)) this.retroBoard.get(item.area).push(item.text);
+      });
+    }
   }
 
-  ngOnInit() {
-    this.itemSubscription = this.retroItemsService.itemsSubject.subscribe({
-      next: (items: PublishedRetroItem[]) => this.processRetroItems(items)
-    });
-  }
-
-  ngOnDestroy() {
-    this.itemSubscription.unsubscribe();
-  }
+  
 }

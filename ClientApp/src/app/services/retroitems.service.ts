@@ -1,4 +1,4 @@
-import { Injectable, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Subject, Observable, Subscription, interval } from 'rxjs'
 import { HttpClient } from '@angular/common/http';
 
@@ -9,7 +9,7 @@ import { PublishedRetroItem } from '../home/home.component';
 })
 export class RetroItemsService {
   public itemsSubject = new Subject<PublishedRetroItem[]>();
-  private items: PublishedRetroItem[] = [];
+  public items: PublishedRetroItem[] = [];
 
   private lastUpdate: Date;
   private refreshTimer: RefreshContainer;

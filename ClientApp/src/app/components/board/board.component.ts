@@ -1,8 +1,7 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { RetroItemsService } from '../../services/retroitems.service';
-import { PublishedRetroItem } from '../../home/home.component'
+import { RetroItemsService, PublishedRetroItem } from '../../services/retroitems.service';
 
 @Component({
   selector: 'retro-board',

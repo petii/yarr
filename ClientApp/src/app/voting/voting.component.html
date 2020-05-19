@@ -3,17 +3,21 @@
   <div class="row">
     <div class="col">
       <h3>Groups</h3>
-      <div [formGroup]="groupEdit">
+      <!--<div [formGroup]="groupEdit">
         <div formArrayName="groups" *ngFor="let group of groupEdit.controls.groups.controls; index as i">
           <input type="text" placeholder="Group Name" (blur)="onGroupNameEdit(i)" formControlName="{{i}}" />
           <input type="button" value="x" (click)="removeGroup(i)" />
         </div>
         <input type="button" (click)="newGroup()" formControlName="addNew" value="{{groupEdit.controls.addNew.value}}" />
-      </div>
+      </div>-->
     </div>
     <div class="col">
+      <h3>Ungrouped Items</h3>
       <div class="container">
-        <div class="row">
+        <div class="row" *ngFor="let item of items">
+          {{item.area}} - {{item.text}}
+        </div>
+        <!--<div class="row">
           <div class="col" *ngFor="let area of areas">
             {{area}}
           </div>
@@ -29,7 +33,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>

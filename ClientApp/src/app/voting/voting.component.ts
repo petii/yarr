@@ -6,9 +6,9 @@ import { RetroItemsService, PublishedRetroItem } from '../services/retroitems.se
 
 @Component({
   selector: 'retro-grouping-board',
-  templateUrl: './grouping.component.html',
+  templateUrl: './voting.component.html',
 })
-export class GroupingComponent implements OnInit, OnDestroy {
+export class VotingComponent implements OnInit, OnDestroy {
 
   private itemSubscription: Subscription;
 
@@ -47,9 +47,12 @@ export class GroupingComponent implements OnInit, OnDestroy {
     // send new item group to server
   }
 
+  public items: PublishedRetroItem[] = [];
+
   ngOnInit() {
     this.itemSubscription = this.retroItemService.itemsSubject.subscribe({
       next: (items: PublishedRetroItem[]) => {
+        this.items = items;
         this.areas = new Set<string>(items.map(item => item.area));
         this.areas.forEach(area => this.retroBoard.set(area, []));
         items.forEach(item => {

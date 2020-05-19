@@ -3,6 +3,7 @@ import { Observable, Subscription, interval } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { PublishedRetroItem } from '../../home/home.component'
+import { RetroItemsService } from '../../services/retroitems.service';
 
 @Component({
   selector: 'retro-board',
@@ -12,44 +13,25 @@ export class BoardComponent implements OnInit, OnDestroy {
   @Input() areas: string[]
   public retroBoard = new Map<string, string[]>();
 
-  private lastUpdate: Date;
-  private refreshTimer: RefreshContainer;
+  private itemSubscription: Subscription;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
-    http.get<UpdateType>(`${baseUrl}api/retro/items`).subscribe(result => this.processRetroItems(result))
-    this.refreshTimer = { timer: interval(1000), subscription: new Subscription() };
-  }
+  constructor(
+    private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
+    private retroItemsService: RetroItemsService) { }
 
-  processRetroItems(update: UpdateType) {
+  processRetroItems(update: PublishedRetroItem[]) {
     console.log(update)
-    this.lastUpdate = new Date(Date.parse(update.timestamp));
     this.areas.forEach(area => this.retroBoard.set(area, []));
-    update.items.forEach(item => this.retroBoard.get(item.area).push(item.text));
+    update.forEach(item => this.retroBoard.get(item.area).push(item.text));
   }
 
   ngOnInit() {
-    this.refreshTimer.subscription = this.refreshTimer.timer.subscribe(val => {
-      this.http.get<string>(`${this.baseUrl}api/retro/lastupdate`).subscribe(result => {
-        let recieved: Date = new Date(Date.parse(result));
-        if (this.lastUpdate < recieved) {
-          this.http.get<UpdateType>(`${this.baseUrl}api/retro/items`).subscribe(result => this.processRetroItems(result));
-        }
-      });
-    })
+    this.itemSubscription = this.retroItemsService.itemsSubject.subscribe({
+      next: (items: PublishedRetroItem[]) => this.processRetroItems(items)
+    });
   }
 
   ngOnDestroy() {
-    this.refreshTimer.subscription.unsubscribe();
+    this.itemSubscription.unsubscribe();
   }
-}
-
-
-export interface UpdateType {
-  timestamp: string;
-  items: PublishedRetroItem[];
-}
-
-class RefreshContainer {
-  timer: Observable<number>;
-  subscription: Subscription;
 }

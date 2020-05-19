@@ -11,7 +11,7 @@ export class UsernameService {
     this.username.next(newName);
   }
 
-  usernameSubject() {
+  usernameSubject(): Subject<string> {
     return this.username;
   }
 }

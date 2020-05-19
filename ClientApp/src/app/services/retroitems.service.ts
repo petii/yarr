@@ -45,7 +45,6 @@ export interface PublishedRetroItem {
   id: number;
   area: string;
   text: string;
-  groupId?: number;
 }
 
 export interface UpdateType {

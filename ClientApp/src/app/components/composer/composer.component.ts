@@ -2,7 +2,8 @@ import { Component, Inject, Input } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 
-import { RetroItem, PublishedRetroItem } from '../../home/home.component';
+import { RetroItem } from '../../home/home.component';
+import { PublishedRetroItem } from '../../services/retroitems.service';
 
 @Component({
   selector: 'retro-item-composer',
@@ -13,7 +14,7 @@ export class ComposerComponent {
 
   public retroItems: RetroItem[] = [];
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {}
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 
   addItem(newitemForm: NgForm) {
     let item = newitemForm.value;
@@ -36,7 +37,7 @@ export class ComposerComponent {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    let publishedItem: PublishedRetroItem = { area: tmp.area, text: tmp.text };
+    let publishedItem: PublishedRetroItem = { id: -1, area: tmp.area, text: tmp.text };
     console.log(JSON.stringify(publishedItem));
     // TODO: error case
     this.http.post(`${this.baseUrl}api/retro/publish`, JSON.stringify(publishedItem), { headers: headers }).subscribe(result => {

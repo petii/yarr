@@ -55,6 +55,7 @@ namespace YetAnotherRetroRegulator.Controllers
     [HttpPost]
     public ActionResult<RetroItem> PublishItem([FromBody] RetroItem value)
     {
+      value.Id = Retro.Items.Count;
       Retro.Items.Add(value);
       Retro.LastPublished = DateTime.Now;
       return value;

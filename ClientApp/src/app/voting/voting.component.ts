@@ -10,59 +10,67 @@ import { RetroItemsService, PublishedRetroItem } from '../services/retroitems.se
 })
 export class VotingComponent implements OnInit, OnDestroy {
 
+  public availableVotes: number = 5;
+
+  public items: VoteableItem[] = [];
+  public groups: string[] = ['group1', 'group2'];
+
   private itemSubscription: Subscription;
 
-  public areas = new Set<string>();
-  public retroBoard = new Map<string, PublishedRetroItem[]>();
-
-  public groupLookup = new Map<number, number>();
-
-  groupEdit: FormGroup;
-
   constructor(private retroItemService: RetroItemsService, private fb: FormBuilder) {
-    this.groupEdit = this.fb.group({
-      groups: this.fb.array([]),
-      addNew: '+',
-    });
+   }
+
+  private newGroup() : number {
+    let newId = this.groups.length;
+    this.groups.push(`Group ${newId + 1}`);
+    return newId;
+    //this.items.find(item => item.id == initialItem).groupId = newId;
   }
 
-  onGroupNameEdit(id: number) {
-    let groups = this.groupEdit.get('groups') as FormArray;
-    console.log(groups.at(id).value);
+  getGroupItems(id: number): VoteableItem[]{
+    return this.items.filter(
+      item => item.groupId == id
+    );
   }
 
-  newGroup() {
-    let groups = this.groupEdit.get('groups') as FormArray;
-    groups.push(this.fb.control(''));
+  getUngroupedItems(): VoteableItem[] {
+    return this.items.filter(
+      item => item.groupId == undefined
+    );
   }
 
-  removeGroup(id: number) {
-    let groups = this.groupEdit.get('groups') as FormArray;
-    groups.removeAt(id);
+  setGroup(id: number, groupId?: number) {
+    //console.log(`${id} -> ${groupId}`);
+    if (groupId < 0) {
+      groupId = this.newGroup();
+    }
+    this.items.find(item => item.id == id).groupId = groupId;
   }
 
-  setGroup(item: number, groupId: number) {
-    console.log(`${item} -> ${groupId}`);
-    //this.groupLookup.set(item, groupId);
-    // send new item group to server
+  addVote(id: number) {
+    let item = this.items.find(i => i.id == id);
+    if (!item.voteCount) { item.voteCount = 0; }
+    item.voteCount++;
+    this.availableVotes--;
   }
 
-  public items: PublishedRetroItem[] = [];
+  removeVote(id: number) {
+    let item = this.items.find(i => i.id == id);
+    item.voteCount--;
+    this.availableVotes++;
+  }
+
+  groupNameChange(id: number, newName: string) {
+    this.groups[id] = newName;
+  }
+
+  saveVotes() {
+
+  }
 
   ngOnInit() {
     this.itemSubscription = this.retroItemService.itemsSubject.subscribe({
-      next: (items: PublishedRetroItem[]) => {
-        this.items = items;
-        this.areas = new Set<string>(items.map(item => item.area));
-        this.areas.forEach(area => this.retroBoard.set(area, []));
-        items.forEach(item => {
-          if (item.groupId >= 0) {
-            let groups = this.groupEdit.get('groups') as FormArray;
-
-          }
-          this.retroBoard.get(item.area).push(item);
-        });
-      }
+      next: (items: PublishedRetroItem[]) => this.items = items
     });
     this.retroItemService.pingItems();
   }
@@ -70,4 +78,9 @@ export class VotingComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.itemSubscription.unsubscribe();
   }
+}
+
+export interface VoteableItem extends PublishedRetroItem {
+  groupId?: number;
+  voteCount?: number;
 }

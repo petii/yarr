@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 
 import { RetroItemsService, PublishedRetroItem } from '../services/retroitems.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'retro-grouping-board',
@@ -13,55 +13,85 @@ export class VotingComponent implements OnInit, OnDestroy {
   public availableVotes: number = 5;
 
   public items: VoteableItem[] = [];
-  public groups: string[] = ['group1', 'group2'];
+  public groups: Group[] = [];
 
   private itemSubscription: Subscription;
 
-  constructor(private retroItemService: RetroItemsService, private fb: FormBuilder) {
-   }
-
-  private newGroup() : number {
-    let newId = this.groups.length;
-    this.groups.push(`Group ${newId + 1}`);
-    return newId;
-    //this.items.find(item => item.id == initialItem).groupId = newId;
+  constructor(
+    private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
+    private retroItemService: RetroItemsService
+  ) {
   }
 
-  getGroupItems(id: number): VoteableItem[]{
+  getGroupItems(id: number): VoteableItem[] {
     return this.items.filter(
-      item => item.groupId == id
+      item => {
+        if (item.group) return item.group.id == id;
+        return false;
+      }
     );
   }
 
   getUngroupedItems(): VoteableItem[] {
     return this.items.filter(
-      item => item.groupId == undefined
+      item => !item.group
     );
   }
 
-  setGroup(id: number, groupId?: number) {
-    //console.log(`${id} -> ${groupId}`);
-    if (groupId < 0) {
-      groupId = this.newGroup();
-    }
-    this.items.find(item => item.id == id).groupId = groupId;
+  kickFromGroup(item: VoteableItem) {
+    item.group = undefined;
+    this.http.patch(
+      `${this.baseUrl}api/retro/items`,
+      JSON.stringify(item),
+      { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
+    ).subscribe(
+      result => console.log(result)
+    );
   }
 
-  addVote(id: number) {
-    let item = this.items.find(i => i.id == id);
+  private newGroup(): Group {
+    let newId = this.groups.length;
+    return { name: `Group ${newId + 1}` };
+  }
+
+  setGroup(item: VoteableItem, groupId: number) {
+    if (groupId < 0) {
+      item.group = this.newGroup();
+    }
+    else {
+      item.group = this.groups.find(g => g.id == groupId);
+    }
+    console.log(JSON.stringify(item));
+    this.http.patch(
+      `${this.baseUrl}api/retro/items`,
+      JSON.stringify(item),
+      { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
+    ).subscribe(
+        result => console.log(result)
+      );
+  }
+
+  addVote(item: VoteableItem) {
     if (!item.voteCount) { item.voteCount = 0; }
     item.voteCount++;
     this.availableVotes--;
   }
 
-  removeVote(id: number) {
-    let item = this.items.find(i => i.id == id);
+  removeVote(item: VoteableItem) {
     item.voteCount--;
     this.availableVotes++;
   }
 
-  groupNameChange(id: number, newName: string) {
-    this.groups[id] = newName;
+  groupNameChange(group: Group, newName: string) {
+    group.name = newName;
+    let item = this.items.find(i => i.group ? i.group.id == group.id : false);
+    this.http.patch(
+      `${this.baseUrl}api/retro/items`,
+      JSON.stringify(item),
+      { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
+    ).subscribe(
+      result => console.log(result)
+    );
   }
 
   saveVotes() {
@@ -70,7 +100,18 @@ export class VotingComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.itemSubscription = this.retroItemService.itemsSubject.subscribe({
-      next: (items: PublishedRetroItem[]) => this.items = items
+      next: (items: PublishedRetroItem[]) => {
+        console.log(items);
+        this.items = items;
+
+        let tmp = items.map<Group>(i => { return i.group; }).filter(i => i != undefined)
+        this.groups = [];
+        tmp.forEach(group => {
+          if (this.groups.find(g => g.id == group.id) == undefined) {
+            this.groups.push(group);
+          }
+        })
+      }
     });
     this.retroItemService.pingItems();
   }
@@ -80,7 +121,9 @@ export class VotingComponent implements OnInit, OnDestroy {
   }
 }
 
-export interface VoteableItem extends PublishedRetroItem {
-  groupId?: number;
-  voteCount?: number;
+export interface Group {
+  id?: number;
+  name: string;
 }
+
+type VoteableItem = PublishedRetroItem;

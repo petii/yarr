@@ -14,6 +14,6 @@ namespace YetAnotherRetroRegulator.Data
     public string[] Areas = { };
     public List<RetroItem> Items = new List<RetroItem> { };
 
-    public List<Group> Groups = new List<Group> { };
+    public List<GroupType> Groups = new List<GroupType> { };
   }
 }

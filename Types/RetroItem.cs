@@ -11,5 +11,7 @@ namespace YetAnotherRetroRegulator.Types
     public string Area { get; set; }
     public string Text { get; set; }
 
+    public GroupType Group { get; set; }
+
   }
 }

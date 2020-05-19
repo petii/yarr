@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { Subject, Observable, Subscription, interval } from 'rxjs'
 import { HttpClient } from '@angular/common/http';
+import { Group } from '../voting/voting.component';
 
 @Injectable({
   providedIn: 'root',
@@ -45,6 +46,8 @@ export interface PublishedRetroItem {
   id: number;
   area: string;
   text: string;
+  group?: Group;
+  voteCount?: number;
 }
 
 export interface UpdateType {

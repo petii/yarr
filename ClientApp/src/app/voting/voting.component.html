@@ -4,12 +4,12 @@
     <div class="col">
       <h3>Groups</h3>
       <div class="container">
-        <div class="row" *ngFor="let group of groups; index as i">
-          <h4 (blur)="groupNameChange(i, $event.target.innerHTML)" contenteditable="true">{{group}}</h4>
+        <div class="row" *ngFor="let group of groups">
+          <h4 *ngIf="getGroupItems(group.id).length > 0" (blur)="groupNameChange(group, $event.target.innerHTML)" contenteditable="true">{{group.name}}</h4>
           <div class="container">
-            <div class="row" *ngFor="let groupItem of getGroupItems(i)">
+            <div class="row" *ngFor="let groupItem of getGroupItems(group.id)">
               {{groupItem.text}}
-              <input type="button" (click)="setGroup(groupItem.id, undefined)" value="kick"/>
+              <input type="button" (click)="kickFromGroup(groupItem)" value="kick" />
             </div>
           </div>
         </div>
@@ -26,36 +26,19 @@
             {{item.text}}
           </div>
           <div class="col">
-            <select (change)="setGroup(item.id, $event.target.value)">
+            <select (change)="setGroup(item, $event.target.value)">
               <option></option>
-              <option *ngFor="let group of groups; index as i" value="{{i}}">{{group}}</option>
+              <option *ngFor="let group of groups" value="{{group.id}}">{{group.name}}</option>
               <option value="-1">New Group</option>
             </select>
           </div>
-          <div class="col">
-            <input *ngIf="!item.voteCount && availableVotes > 0" type="button" value="vote" (click)="addVote(item.id)" />
-            <input *ngIf="item.voteCount && item.voteCount > 0" type="button" value="-" (click)="removeVote(item.id)" />
+          <div class="col" >
+            <input *ngIf="!item.voteCount && availableVotes > 0" type="button" value="vote" (click)="addVote(item)" />
+            <input *ngIf="item.voteCount && item.voteCount > 0" type="button" value="-" (click)="removeVote(item)" />
             <span *ngIf="item.voteCount">{{item.voteCount}}</span>
-            <input *ngIf="item.voteCount && availableVotes > 0" type="button" value="+" (click)="addVote(item.id)" />
+            <input *ngIf="item.voteCount && availableVotes > 0" type="button" value="+" (click)="addVote(item)" />
           </div>
         </div>
-        <!--<div class="row">
-          <div class="col" *ngFor="let area of areas">
-            {{area}}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col" *ngFor="let area of areas">
-            <div class="container">
-              <div class="row" *ngFor="let areaItem of retroBoard.get(area)">
-                <p>{{areaItem.text}} - {{areaItem.id}}</p>
-                <div *ngFor="let group of groupEdit.controls.groups.controls; index as i">
-                  <input type="button" (click)="setGroup(areaItem.id, i)" value="{{group.value}}" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>-->
       </div>
     </div>
   </div>

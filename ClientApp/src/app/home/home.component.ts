@@ -2,7 +2,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { UsernameService } from '../services/username.service';
-import { RetroItemsService } from '../services/retroitems.service';
+import { PublishedRetroItem, RetroItemsService } from '../services/retroitems.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -41,11 +41,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.itemSubscription.unsubscribe();
   }
-}
-
-export interface PublishedRetroItem {
-  area: string;
-  text: string;
 }
 
 export class RetroItem {

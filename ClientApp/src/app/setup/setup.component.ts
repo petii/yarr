@@ -9,9 +9,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 export class SetupComponent {
   setupForm: FormGroup;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL')
-  private baseUrl: string,
-    private fb: FormBuilder) {
+  constructor(
+    private http: HttpClient, @Inject('BASE_URL')
+    private baseUrl: string,
+    private fb: FormBuilder
+  ) {
     this.setupForm = this.fb.group({
       votes: 5,
       areas: this.fb.array([this.fb.control('area1'), this.fb.control('area2')])

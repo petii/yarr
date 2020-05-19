@@ -2,8 +2,6 @@ import { Injectable, Inject } from '@angular/core';
 import { Subject, Observable, Subscription, interval } from 'rxjs'
 import { HttpClient } from '@angular/common/http';
 
-import { PublishedRetroItem } from '../home/home.component';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -41,6 +39,13 @@ export class RetroItemsService {
       this.pingItems();
     });
   }
+}
+
+export interface PublishedRetroItem {
+  id: number;
+  area: string;
+  text: string;
+  groupId?: number;
 }
 
 export interface UpdateType {

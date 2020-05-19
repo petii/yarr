@@ -6,12 +6,14 @@ using YetAnotherRetroRegulator.Types;
 
 namespace YetAnotherRetroRegulator.Data
 {
-	public class RetroData
-	{
-		public DateTime LastPublished = DateTime.Now;
+  public class RetroData
+  {
+    public DateTime LastPublished = DateTime.Now;
 
-		public int AvailableVotes = 3;
-		public string[] Areas = { };
-		public List<RetroItem> Items = new List<RetroItem> { };
-	}
+    public int AvailableVotes = 3;
+    public string[] Areas = { };
+    public List<RetroItem> Items = new List<RetroItem> { };
+
+    public List<Group> Groups = new List<Group> { };
+  }
 }

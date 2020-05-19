@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 
 namespace YetAnotherRetroRegulator.Types
 {
-  public class RetroItem
+  public class Group
   {
     public int Id { get; set; }
-    public string Area { get; set; }
-    public string Text { get; set; }
-
+    public string Name { get; set; }
+    public List<int> Items { get; set; }
   }
 }

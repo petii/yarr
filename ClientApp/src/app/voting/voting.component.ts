@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { RetroItemsService, PublishedRetroItem } from '../services/retroitems.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { RetroSetup } from '../setup/setup.component';
 
 @Component({
   selector: 'retro-grouping-board',
@@ -22,7 +23,12 @@ export class VotingComponent implements OnInit, OnDestroy {
   constructor(
     private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
     private retroItemService: RetroItemsService
-  ) { }
+  ) {
+    http.get<RetroSetup>(`${this.baseUrl}api/retro/setup`).subscribe(result => {
+      console.log(result);
+      this.availableVotes = Math.max(0, result.votes);
+    });
+  }
 
   getGroupItems(id: number): PublishedRetroItem[] {
     return this.items.filter(

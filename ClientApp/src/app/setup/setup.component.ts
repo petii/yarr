@@ -39,3 +39,8 @@ export class SetupComponent {
     areas.push(this.fb.control(''));
   }
 }
+
+export interface RetroSetup {
+  areas: string[];
+  votes: number;
+}

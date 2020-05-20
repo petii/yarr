@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { UsernameService } from '../services/username.service';
 import { PublishedRetroItem, RetroItemsService } from '../services/retroitems.service';
 import { Subscription } from 'rxjs';
+import { RetroSetup } from '../setup/setup.component';
 
 @Component({
   selector: 'app-home',
@@ -49,7 +50,3 @@ export class RetroItem {
   area: string;
 }
 
-interface RetroSetup {
-  areas: string[];
-  votes: number;
-}

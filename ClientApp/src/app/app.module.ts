@@ -12,8 +12,8 @@ import { SetupComponent } from './setup/setup.component';
 import { HomeComponent } from './home/home.component';
 import { BoardComponent } from './components/board/board.component';
 import { ComposerComponent } from './components/composer/composer.component';
-
 import { VotingComponent } from './voting/voting.component';
+import { ResultsComponent } from './results/results.component';
 
 
 @NgModule({
@@ -25,6 +25,7 @@ import { VotingComponent } from './voting/voting.component';
     BoardComponent,
     ComposerComponent,
     VotingComponent,
+    ResultsComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -33,8 +34,9 @@ import { VotingComponent } from './voting/voting.component';
     ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'setup', component: SetupComponent },
       { path: 'voting', component: VotingComponent },
+      { path: 'results', component: ResultsComponent },
+      { path: 'setup', component: SetupComponent },
     ])
   ],
   providers: [],

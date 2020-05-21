@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import * as xlsx from 'xlsx';
 
 import { RetroItemsService, PublishedRetroItem } from '../services/retroitems.service';
 import { VotesService } from '../services/votes.service';
-import { Group } from '../voting/voting.component';
 
 @Component({
   selector: 'retro-grouping-board',

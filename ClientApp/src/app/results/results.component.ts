@@ -89,4 +89,5 @@ interface ActionArea {
   text: string;
   votes: number;
   subitems?: VoteContainer[];
+  ai: string;
 }

@@ -1,5 +1,12 @@
 <h2>this isn't even my final form</h2>
-<div *ngFor="let item of actionItems; index as i">
-  <p>{{i+1}}. place with {{item.votes}} votes</p>
-  <p>{{item.text}}</p>
+<button>Save results</button>
+<div class="row" *ngFor="let item of actionItems; index as i">
+  <div class="col">
+    <p>{{i+1}}. place with {{item.votes}} votes</p>
+    <p>{{item.text}}</p>
+  </div>
+  <div class="col">
+    <h4>Action item</h4>
+    <textarea class="form-control" name="actionitem"></textarea>
+  </div>
 </div>

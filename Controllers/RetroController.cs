@@ -89,11 +89,21 @@ namespace YetAnotherRetroRegulator.Controllers
 
     [Route("vote")]
     [HttpPost]
-    public int[] Vote([FromBody]int[] votes)
+    public int[] Vote([FromBody] int[] votes)
     {
       Retro.Votes.AddRange(votes);
       Retro.LastPublished = DateTime.Now;
       return votes;
+    }
+
+    [Route("votes")]
+    [HttpGet]
+    public VoteUpdate GetVotes()
+    {
+      var data = new VoteUpdate();
+      data.Timestamp = Retro.LastPublished;
+      data.Votes = Retro.Votes.ToArray();
+      return data;
     }
   }
 }

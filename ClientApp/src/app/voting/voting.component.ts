@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { RetroItemsService, PublishedRetroItem } from '../services/retroitems.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RetroSetup } from '../setup/setup.component';
+import { VotesService } from '../services/votes.service';
 
 @Component({
   selector: 'retro-grouping-board',
@@ -22,7 +23,7 @@ export class VotingComponent implements OnInit, OnDestroy {
 
   constructor(
     private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
-    private retroItemService: RetroItemsService
+    private retroItemService: RetroItemsService, public voteService: VotesService
   ) {
     http.get<RetroSetup>(`${this.baseUrl}api/retro/setup`).subscribe(result => {
       console.log(result);
@@ -104,8 +105,6 @@ export class VotingComponent implements OnInit, OnDestroy {
     this.availableVotes++;
   }
 
-  public voted: boolean = false;
-
   canRemoveVote(item: PublishedRetroItem): boolean {
     let vote = this.votes.find(i => i == item.id);
     return vote != null;
@@ -124,7 +123,7 @@ export class VotingComponent implements OnInit, OnDestroy {
       JSON.stringify(this.votes),
       { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
     ).subscribe(result => console.log(result));
-    this.voted = true;
+    this.voteService.alreadyVoted = true;
   }
 
   ngOnInit() {

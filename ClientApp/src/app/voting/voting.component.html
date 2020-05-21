@@ -6,7 +6,7 @@
       {{id}}
     </span>
   </div>
-  <input *ngIf="!voted" type="button" value="submit votes" (click)="saveVotes()">
+  <input *ngIf="!this.voteService.alreadyVoted" type="button" value="submit votes" (click)="saveVotes()">
   <div class="row">
     <div class="col">
       <h3>Groups</h3>
@@ -28,7 +28,7 @@
               <div class="col">
                 <input type="button" (click)="kickFromGroup(item)" value="kick" />
               </div>
-              <div class="col" *ngIf="!voted">
+              <div class="col" *ngIf="!this.voteService.alreadyVoted">
                 <input *ngIf="canRemoveVote(item)" type="button" value="-" (click)="removeVote(item)" />
                 <input *ngIf="canAddVote(item)" type="button" value="+" (click)="addVote(item)" />
               </div>
@@ -54,7 +54,7 @@
               <option value="-1">New Group</option>
             </select>
           </div>
-          <div class="col">
+          <div class="col" *ngIf="!this.voteService.alreadyVoted">
             <input *ngIf="canRemoveVote(item)" type="button" value="-" (click)="removeVote(item)" />
             <input *ngIf="canAddVote(item)" type="button" value="+" (click)="addVote(item)" />
           </div>

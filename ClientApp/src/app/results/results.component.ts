@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import * as xlsx from 'xlsx';
+import * as XLSX from 'xlsx';
 
 import { RetroItemsService, PublishedRetroItem } from '../services/retroitems.service';
 import { VotesService } from '../services/votes.service';
@@ -47,10 +47,9 @@ export class ResultsComponent implements OnInit, OnDestroy {
         let action = this.actionItems.find(i => i.text == group.name);
         if (action) {
           action.votes += item.votes;
-          action.subitems.push(item);
         }
         else {
-          this.actionItems.push({ text: group.name, votes: item.votes, subitems: [item] })
+          this.actionItems.push({ text: group.name, votes: item.votes})
         }
       }
       else {
@@ -59,6 +58,18 @@ export class ResultsComponent implements OnInit, OnDestroy {
     });
     this.actionItems = this.actionItems.sort((lhs, rhs) => rhs.votes - lhs.votes);
     console.log(this.actionItems);
+  }
+
+  aiEdit(which: ActionArea, ai : string) {
+    which.ai = ai;
+  }
+
+  save() {
+    let sheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.actionItems);
+    let book: XLSX.WorkBook = XLSX.utils.book_new();
+    let date = new Date().toISOString();
+    XLSX.utils.book_append_sheet(book, sheet, date);
+    XLSX.writeFile(book, `T10-retroAI-${date}.xlsx`);
   }
 
   ngOnInit() {
@@ -88,6 +99,5 @@ interface VoteContainer extends PublishedRetroItem {
 interface ActionArea {
   text: string;
   votes: number;
-  subitems?: VoteContainer[];
   ai?: string;
 }

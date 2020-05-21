@@ -71,20 +71,23 @@ namespace YetAnotherRetroRegulator.Controllers
 
     [Route("items")]
     [HttpPatch]
-    public GroupType SetGroup([FromBody] RetroItem data)
+    public bool SetGroup([FromBody] RetroItem[] items)
     {
-      if (data.Group != null && data.Group.Id == null)
+      foreach (RetroItem data in items)
       {
-        data.Group.Id = Retro.Groups.Count + 1;
-        Retro.Groups.Add(data.Group);
+        if (data.Group != null && data.Group.Id == null)
+        {
+          data.Group.Id = Retro.Groups.Count + 1;
+          Retro.Groups.Add(data.Group);
+        }
+        else if (data.Group != null)
+        {
+          Retro.Groups.Find(item => item.Id == data.Group.Id).Name = data.Group.Name;
+        }
+        Retro.Items.Find(item => item.Id == data.Id).Group = data.Group;
       }
-      else if (data.Group != null)
-      {
-        Retro.Groups.Find(item => item.Id == data.Group.Id).Name = data.Group.Name;
-      }
-      Retro.Items.Find(item => item.Id == data.Id).Group = data.Group;
       Retro.LastPublished = DateTime.Now;
-      return data.Group;
+      return true;
     }
 
     [Route("vote")]

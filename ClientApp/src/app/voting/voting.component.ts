@@ -50,7 +50,7 @@ export class VotingComponent implements OnInit, OnDestroy {
     item.group = undefined;
     this.http.patch(
       `${this.baseUrl}api/retro/items`,
-      JSON.stringify(item),
+      JSON.stringify([item]),
       { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
     ).subscribe(
       result => console.log(result)
@@ -72,19 +72,21 @@ export class VotingComponent implements OnInit, OnDestroy {
     console.log(JSON.stringify(item));
     this.http.patch(
       `${this.baseUrl}api/retro/items`,
-      JSON.stringify(item),
+      JSON.stringify([item]),
       { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
     ).subscribe(
-        result => console.log(result)
-      );
+      result => console.log(result)
+    );
   }
 
   groupNameChange(group: Group, newName: string) {
     group.name = newName;
-    let item = this.items.find(i => i.group ? i.group.id == group.id : false);
+    let itemsInGroup = this.items.filter(i => i.group ? i.group.id == group.id : false);
+    itemsInGroup.forEach(item => item.group.name = newName);
+    console.log(itemsInGroup);
     this.http.patch(
       `${this.baseUrl}api/retro/items`,
-      JSON.stringify(item),
+      JSON.stringify(itemsInGroup),
       { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
     ).subscribe(
       result => console.log(result)
@@ -111,7 +113,7 @@ export class VotingComponent implements OnInit, OnDestroy {
   }
 
   canAddVote(item: PublishedRetroItem): boolean {
-    
+
     return this.availableVotes > 0;
   }
 

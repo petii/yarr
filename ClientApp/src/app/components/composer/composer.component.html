@@ -15,16 +15,18 @@
     </form>
   </div>
   <div class="container retro-item-container">
-    <div class="row" *ngFor="let item of retroItems">
-      <div class="col">
-        <span class="badge badge-info">{{item.area}}</span>
-      </div>
-      <div class="col">{{item.text}}</div>
-      <div class="col">
-        <button class="btn btn-success" type="button" (click)="publishItem(item.id)">Publish</button>
-      </div>
-      <div class="col">
-        <button class="btn btn-danger" type="button" (click)="removeItem(item.id)">X</button>
+    <div *ngFor="let item of retroItems">
+      <div class="row">
+        <div class="col">
+          <span class="badge badge-info">{{item.area}}</span>
+          {{item.text}}
+        </div>
+        <div class="col">
+          <button class="btn btn-success" type="button" (click)="publishItem(item.id)">Publish</button>
+        </div>
+        <div class="col">
+          <button class="btn btn-danger" type="button" (click)="removeItem(item.id)">X</button>
+        </div>
       </div>
     </div>
   </div>

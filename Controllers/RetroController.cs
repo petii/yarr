@@ -30,21 +30,21 @@ namespace YetAnotherRetroRegulator.Controllers
 
     [Route("lastupdate")]
     [HttpGet]
-    public DateTime GetLastPublished()
+    public /*async*/ DateTime GetLastPublished()
     {
       return Retro.LastPublished;
     }
 
     [Route("setup")]
     [HttpGet]
-    public RetroSetup GetSetup()
+    public /*async*/ RetroSetup GetSetup()
     {
       return new RetroSetup() { Areas = Retro.Areas.ToArray(), Votes = Retro.AvailableVotes };
     }
 
     [Route("setup")]
     [HttpPut]
-    public ActionResult<RetroSetup> PutSetup([FromBody] RetroSetup value)
+    public /*async*/ ActionResult<RetroSetup> PutSetup([FromBody] RetroSetup value)
     {
       Retro.Areas = value.Areas.ToList();
       Retro.AvailableVotes = value.Votes;
@@ -53,7 +53,7 @@ namespace YetAnotherRetroRegulator.Controllers
 
     [Route("publish")]
     [HttpPost]
-    public ActionResult<RetroItem> PublishItem([FromBody] RetroItem value)
+    public /*async*/ ActionResult<RetroItem> PublishItem([FromBody] RetroItem value)
     {
       value.Id = Retro.Items.Count;
       Retro.Items.Add(value);
@@ -63,14 +63,14 @@ namespace YetAnotherRetroRegulator.Controllers
 
     [Route("items")]
     [HttpGet]
-    public Update GetItems()
+    public /*async*/ Update GetItems()
     {
       return new Update(Retro.LastPublished, Retro.Items.ToArray());
     }
 
     [Route("items")]
     [HttpPatch]
-    public bool SetGroup([FromBody] RetroItem[] items)
+    public /*async*/ bool SetGroup([FromBody] RetroItem[] items)
     {
       foreach (RetroItem data in items)
       {
@@ -91,7 +91,7 @@ namespace YetAnotherRetroRegulator.Controllers
 
     [Route("vote")]
     [HttpPost]
-    public int[] Vote([FromBody] int[] votes)
+    public /*async*/ int[] Vote([FromBody] int[] votes)
     {
       Retro.Votes.AddRange(votes);
       Retro.LastPublished = DateTime.Now;
@@ -100,7 +100,7 @@ namespace YetAnotherRetroRegulator.Controllers
 
     [Route("votes")]
     [HttpGet]
-    public VoteUpdate GetVotes()
+    public /*async*/ VoteUpdate GetVotes()
     {
       var data = new VoteUpdate();
       data.Timestamp = Retro.LastPublished;

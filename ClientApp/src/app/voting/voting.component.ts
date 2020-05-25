@@ -94,11 +94,14 @@ export class VotingComponent implements OnInit, OnDestroy {
   }
 
   addVote(item: PublishedRetroItem) {
+    if (!this.canAddVote(item)) return;
     this.votes.push(item.id);
     this.availableVotes--;
   }
 
-  removeVote(item: PublishedRetroItem) {
+  removeVote(item: PublishedRetroItem)
+  {
+    if (!this.canRemoveVote(item)) return;
     let voteIndex = this.votes.findIndex(i => i == item.id);
     this.votes.splice(voteIndex, 1);
     this.availableVotes++;
@@ -111,6 +114,10 @@ export class VotingComponent implements OnInit, OnDestroy {
 
   canAddVote(item: PublishedRetroItem): boolean {
     return this.availableVotes > 0;
+  }
+
+  getVoteCount(item: PublishedRetroItem): number {
+    return this.votes.filter(i => i == item.id).length;
   }
 
 

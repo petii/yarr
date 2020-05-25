@@ -1,64 +1,71 @@
-<div class="container">
-  <h2>let's get ready to rumble</h2>
-  <div>
+<div class="row">
+  <div class="col">
     Your votes:
     <span *ngFor="let id of votes">
       {{id}}
     </span>
   </div>
-  <input *ngIf="!this.voteService.alreadyVoted" type="button" value="submit votes" (click)="saveVotes()">
-  <div class="row">
-    <div class="col">
-      <h3>Groups</h3>
-      <div class="container">
-        <div class="row" *ngFor="let group of groups">
-          <h4 *ngIf="getGroupItems(group.id).length > 0"
-              (blur)="groupNameChange(group, $event.target.innerHTML)"
+  <div class="col" *ngIf="!this.voteService.alreadyVoted">
+    <input class="btn btn-primary btn-lg btn-block" type="button" value="Submit Votes" (click)="saveVotes()">
+  </div>
+</div>
+<div class="row">
+  <div class="col" *ngIf="groups.length > 0">
+    <div *ngFor="let group of groups">
+      <div class="card border-secondary mb-3" *ngIf="getGroupItems(group.id).length > 0">
+        <div class="card-header">
+          <h3 (blur)="groupNameChange(group, $event.target.innerHTML)"
               contenteditable="true">
             {{group.name}}
-          </h4>
-          <div class="container">
-            <div class="row" *ngFor="let item of getGroupItems(group.id)">
+          </h3>
+        </div>
+        <div class="list-group list-group-flush">
+          <div class="list-group-item list-group-item-action" *ngFor="let item of getGroupItems(group.id)">
+            <div class="container row">
               <div class="col">
-                {{item.area}}
-              </div>
-              <div class="col">
+                <span class="badge badge-info">{{item.area}}</span>
                 {{item.text}}
               </div>
               <div class="col">
-                <input type="button" (click)="kickFromGroup(item)" value="kick" />
+                <input class="btn btn-primary" type="button" (click)="kickFromGroup(item)" value="Kick" />
               </div>
-              <div class="col" *ngIf="!this.voteService.alreadyVoted">
-                <input *ngIf="canRemoveVote(item)" type="button" value="-" (click)="removeVote(item)" />
-                <input *ngIf="canAddVote(item)" type="button" value="+" (click)="addVote(item)" />
+              <div class="btn-group" role="group" *ngIf="!voteService.alreadyVoted">
+                <button type="button" class="btn btn-secondary" [ngClass]="canRemoveVote(item) ? '' : 'disabled'" (click)="removeVote(item)">-</button>
+                <button type="button" class="btn btn-outline-secondary">{{getVoteCount(item)}}</button>
+                <button type="button" class="btn btn-secondary" [ngClass]="canAddVote(item) ? '' : 'disabled'" (click)="addVote(item)">+</button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col">
-      <h3>Ungrouped Items</h3>
-      <div class="container">
-        <div class="row" *ngFor="let item of getUngroupedItems()">
-          <div class="col">
-            {{item.area}}
+  </div>
+  <div class="col" *ngIf="getUngroupedItems().length > 0">
+    <div class="card border-secondary mb-3">
+      <div class="card-header">
+        <h3>Ungrouped Items</h3>
+      </div>
+      <div class="list-group list-group-flush">
+          <div class="list-group-item list-group-item-action" *ngFor="let item of getUngroupedItems()">
+            <div class="container row">
+              <div class="col">
+                <span class="badge badge-info">{{item.area}}</span>
+                {{item.text}}
+              </div>
+              <div class="col form-group">
+                <select class="custom-select" (change)="setGroup(item, $event.target.value)">
+                  <option selected></option>
+                  <option *ngFor="let group of groups" value="{{group.id}}">{{group.name}}</option>
+                  <option value="-1">New Group</option>
+                </select>
+              </div>
+              <div class="btn-group" role="group" *ngIf="!voteService.alreadyVoted">
+                <button type="button" class="btn btn-secondary" [ngClass]="canRemoveVote(item) ? '' : 'disabled'" (click)="removeVote(item)" >-</button>
+                <button type="button" class="btn btn-outline-secondary">{{getVoteCount(item)}}</button>
+                <button type="button" class="btn btn-secondary" [ngClass]="canAddVote(item) ? '' : 'disabled'" (click)="addVote(item)">+</button>
+              </div>
+            </div>
           </div>
-          <div class="col">
-            {{item.text}}
-          </div>
-          <div class="col">
-            <select (change)="setGroup(item, $event.target.value)">
-              <option></option>
-              <option *ngFor="let group of groups" value="{{group.id}}">{{group.name}}</option>
-              <option value="-1">New Group</option>
-            </select>
-          </div>
-          <div class="col" *ngIf="!this.voteService.alreadyVoted">
-            <input *ngIf="canRemoveVote(item)" type="button" value="-" (click)="removeVote(item)" />
-            <input *ngIf="canAddVote(item)" type="button" value="+" (click)="addVote(item)" />
-          </div>
-        </div>
       </div>
     </div>
   </div>

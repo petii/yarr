@@ -18,7 +18,6 @@ export class ResultsComponent implements OnInit, OnDestroy {
   private items: PublishedRetroItem[] = [];
 
   private voteSubscription: Subscription;
-  private votes: number[] = [];
 
   public votedItems: VoteContainer[] = [];
   public actionItems: ActionArea[] = [];
@@ -49,7 +48,7 @@ export class ResultsComponent implements OnInit, OnDestroy {
           action.votes += item.votes;
         }
         else {
-          this.actionItems.push({ text: group.name, votes: item.votes})
+          this.actionItems.push({ text: group.name, votes: item.votes })
         }
       }
       else {
@@ -60,7 +59,7 @@ export class ResultsComponent implements OnInit, OnDestroy {
     console.log(this.actionItems);
   }
 
-  aiEdit(which: ActionArea, ai : string) {
+  aiEdit(which: ActionArea, ai: string) {
     which.ai = ai;
   }
 
@@ -79,7 +78,6 @@ export class ResultsComponent implements OnInit, OnDestroy {
     this.retroItemService.pingItems();
     this.voteSubscription = this.voteService.votesSubject.subscribe({
       next: (votes: number[]) => {
-        this.votes = votes
         this.accumulate(votes);
       }
     });

@@ -13,7 +13,6 @@ using YetAnotherRetroRegulator.Types;
 namespace YetAnotherRetroRegulator.Controllers
 {
   [Route("api/[controller]")]
-
   public class RetroController : Controller
   {
     private RetroData Retro;
@@ -40,14 +39,14 @@ namespace YetAnotherRetroRegulator.Controllers
     [HttpGet]
     public RetroSetup GetSetup()
     {
-      return new RetroSetup() { Areas = Retro.Areas, Votes = Retro.AvailableVotes };
+      return new RetroSetup() { Areas = Retro.Areas.ToArray(), Votes = Retro.AvailableVotes };
     }
 
     [Route("setup")]
     [HttpPut]
     public ActionResult<RetroSetup> PutSetup([FromBody] RetroSetup value)
     {
-      Retro.Areas = value.Areas;
+      Retro.Areas = value.Areas.ToList();
       Retro.AvailableVotes = value.Votes;
       return value;
     }

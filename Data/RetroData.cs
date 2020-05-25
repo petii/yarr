@@ -8,14 +8,27 @@ namespace YetAnotherRetroRegulator.Data
 {
   public class RetroData
   {
-    public DateTime LastPublished = DateTime.Now;
+    public RetroData()
+    {
+      LastPublished = DateTime.Now;
+      Areas = new List<string>();
+      Items = new List<RetroItem>();
+      Groups = new List<GroupType>();
+      AvailableVotes = 0;
+      Votes = new List<int>();
+    }
 
-    public int AvailableVotes = 3;
-    public string[] Areas = { };
-    public List<RetroItem> Items = new List<RetroItem> { };
+    public DateTime LastPublished { get; set; }
 
-    public List<GroupType> Groups = new List<GroupType> { };
+    public List<string> Areas { get; set; }
+    public List<RetroItem> Items { get; set; }
 
-    public List<int> Votes = new List<int> { };
+    public DateTime LastGroupChange { get; set; }
+    public List<GroupType> Groups { get; set; }
+
+    public DateTime LastVoted { get; set; }
+    public int AvailableVotes { get; set; }
+
+    public List<int> Votes { get; set; }
   }
 }

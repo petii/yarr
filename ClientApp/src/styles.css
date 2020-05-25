@@ -15,7 +15,7 @@ code {
   border-color: #1861ac;
 }
 
-.row {
+/*.row {
   border: 1px dashed red;
   padding: 1px;
   margin: 1px;
@@ -25,4 +25,9 @@ code {
   border: 1px solid blue;
   padding: 1px;
   margin: 1px;
+}
+*/
+
+.group-selector {
+  margin-bottom: 0px;
 }

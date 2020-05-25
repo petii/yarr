@@ -14,17 +14,17 @@
       <input class="btn btn-primary btn-lg btn-block" type="submit" />
     </form>
   </div>
-  <div class="container retro-item-container">
-    <div *ngFor="let item of retroItems">
-      <div class="row">
+  <div class="list-group">
+    <div class="list-group-item list-group-item-action" *ngFor="let item of retroItems">
+      <div class="container row">
         <div class="col">
           <span class="badge badge-info">{{item.area}}</span>
           {{item.text}}
         </div>
-        <div class="col">
+        <div class="col-2">
           <button class="btn btn-success" type="button" (click)="publishItem(item.id)">Publish</button>
         </div>
-        <div class="col">
+        <div class="col-1">
           <button class="btn btn-danger" type="button" (click)="removeItem(item.id)">X</button>
         </div>
       </div>

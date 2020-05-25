@@ -26,13 +26,13 @@
                 <span class="badge badge-info">{{item.area}}</span>
                 {{item.text}}
               </div>
-              <div class="col">
+              <div class="col-2">
                 <input class="btn btn-primary" type="button" (click)="kickFromGroup(item)" value="Kick" />
               </div>
-              <div class="btn-group" role="group" *ngIf="!voteService.alreadyVoted">
-                <button type="button" class="btn btn-secondary" [ngClass]="canRemoveVote(item) ? '' : 'disabled'" (click)="removeVote(item)">-</button>
-                <button type="button" class="btn btn-outline-secondary">{{getVoteCount(item)}}</button>
-                <button type="button" class="btn btn-secondary" [ngClass]="canAddVote(item) ? '' : 'disabled'" (click)="addVote(item)">+</button>
+              <div class="col-2 btn-group" role="group" *ngIf="!voteService.alreadyVoted">
+                <button type="button" class="btn btn-sm btn-secondary" [ngClass]="canRemoveVote(item) ? '' : 'disabled'" (click)="removeVote(item)">-</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary">{{getVoteCount(item)}}</button>
+                <button type="button" class="btn btn-sm btn-secondary" [ngClass]="canAddVote(item) ? '' : 'disabled'" (click)="addVote(item)">+</button>
               </div>
             </div>
           </div>
@@ -52,17 +52,17 @@
                 <span class="badge badge-info">{{item.area}}</span>
                 {{item.text}}
               </div>
-              <div class="col form-group">
+              <div class="col-4 form-group group-selector">
                 <select class="custom-select" (change)="setGroup(item, $event.target.value)">
                   <option selected></option>
                   <option *ngFor="let group of groups" value="{{group.id}}">{{group.name}}</option>
                   <option value="-1">New Group</option>
                 </select>
               </div>
-              <div class="btn-group" role="group" *ngIf="!voteService.alreadyVoted">
-                <button type="button" class="btn btn-secondary" [ngClass]="canRemoveVote(item) ? '' : 'disabled'" (click)="removeVote(item)" >-</button>
-                <button type="button" class="btn btn-outline-secondary">{{getVoteCount(item)}}</button>
-                <button type="button" class="btn btn-secondary" [ngClass]="canAddVote(item) ? '' : 'disabled'" (click)="addVote(item)">+</button>
+              <div class="col-2 btn-group" role="group" *ngIf="!voteService.alreadyVoted">
+                <button type="button" class="btn btn-sm btn-secondary" [ngClass]="canRemoveVote(item) ? '' : 'disabled'" (click)="removeVote(item)" >-</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary">{{getVoteCount(item)}}</button>
+                <button type="button" class="btn btn-sm btn-secondary" [ngClass]="canAddVote(item) ? '' : 'disabled'" (click)="addVote(item)">+</button>
               </div>
             </div>
           </div>

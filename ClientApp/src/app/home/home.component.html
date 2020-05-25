@@ -1,13 +1,11 @@
-<div class="container">
-  <div class="row">
-    <h1>hello, world</h1>
+<div class="row">
+  <h1>hello, world</h1>
+</div>
+<div class="row">
+  <div class="col">
+    <retro-item-composer [areas]="areas"></retro-item-composer>
   </div>
-  <div class="row">
-    <div class="col">
-      <retro-item-composer [areas]="areas"></retro-item-composer>
-    </div>
-    <div class="col">
-      <retro-board [areas]="areas" [items]="items"></retro-board>
-    </div>
+  <div class="col">
+    <retro-board [areas]="areas" [items]="items"></retro-board>
   </div>
 </div>

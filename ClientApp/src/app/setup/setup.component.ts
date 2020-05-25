@@ -20,6 +20,11 @@ export class SetupComponent {
     });
   }
 
+  getAreas() {
+    let tmp = this.setupForm.controls.areas as FormArray;
+    return tmp.controls;
+  }
+
   updateRetroSettings() {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'

@@ -2,7 +2,7 @@
 
 <form [formGroup]="setupForm" (ngSubmit)="updateRetroSettings()" >
   <h2>Areas</h2>
-  <div formArrayName="areas" *ngFor="let area of setupForm.controls.areas.controls; index as i">
+  <div formArrayName="areas" *ngFor="let area of getAreas(); index as i">
     <input placeholder="Area Name" value="{{area.value}}" formControlName="{{i}}" />
     <input type="button" (click)="removeArea(i)" value="x" />
   </div>

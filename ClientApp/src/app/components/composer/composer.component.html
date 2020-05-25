@@ -1,21 +1,30 @@
 <div class="sidebar">
   <div class="form-group add-new-retro-item">
     <form #newItemForm="ngForm" (submit)="addItem(newItemForm)">
-      <div *ngFor="let area of areas">
+      <!--<div *ngFor="let area of areas">
         <input type="radio" name="area" value="{{area}}" id="{{area}}" ngModel required>
         <label for="{{area}}">{{area}}</label>
+      </div>-->
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn" *ngFor="let area of areas; index as i" [ngClass]="i == currentArea ? 'btn-primary active' : 'btn-secondary'">
+          <input type="radio" name="options" id="option1" autocomplete="off" (click)="currentArea = i">{{area}}
+        </label>
       </div>
       <textarea class="form-control" name="text" ngModel required></textarea>
-      <input type="submit" />
+      <input class="btn btn-primary btn-lg btn-block" type="submit" />
     </form>
   </div>
   <div class="container retro-item-container">
     <div class="row" *ngFor="let item of retroItems">
-      <div class="col">{{item.area}}</div>
+      <div class="col">
+        <span class="badge badge-info">{{item.area}}</span>
+      </div>
       <div class="col">{{item.text}}</div>
       <div class="col">
-        <button type="button" (click)="removeItem(item.id)">delete</button>
-        <button type="button" (click)="publishItem(item.id)">publish</button>
+        <button class="btn btn-success" type="button" (click)="publishItem(item.id)">Publish</button>
+      </div>
+      <div class="col">
+        <button class="btn btn-danger" type="button" (click)="removeItem(item.id)">x</button>
       </div>
     </div>
   </div>

@@ -15,12 +15,6 @@ code {
   border-color: #1861ac;
 }
 
-.container {
-  border: 1px dotted black;
-  padding: 1px;
-  margin: 1px;
-}
-
 .row {
   border: 1px dashed red;
   padding: 1px;

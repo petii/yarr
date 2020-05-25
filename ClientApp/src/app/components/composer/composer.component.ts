@@ -14,10 +14,13 @@ export class ComposerComponent {
 
   public retroItems: RetroItem[] = [];
 
+  public currentArea: number = 0;
+
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 
   addItem(newitemForm: NgForm) {
-    let item = newitemForm.value;
+    let item = newitemForm.value as RetroItem;
+    item.area = this.areas[this.currentArea]
     let currentItemCount = this.retroItems.length;
     item.id = this.retroItems.length + 1;
     if (this.retroItems.length > 0) {

@@ -12,7 +12,7 @@ import { RetroSetup } from '../setup/setup.component';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   public areas: string[];
-  private items: PublishedRetroItem[];
+  public items: PublishedRetroItem[];
 
   private itemSubscription: Subscription;
 

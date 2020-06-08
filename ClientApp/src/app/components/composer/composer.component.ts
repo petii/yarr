@@ -14,8 +14,6 @@ import { UsernameService } from '../../services/username.service';
 export class ComposerComponent {
   @Input() areas: string[];
 
-  public retroItems: RetroItem[] = [];
-
   public currentArea: number = 0;
 
   constructor(
@@ -28,18 +26,16 @@ export class ComposerComponent {
   addItem(newitemForm: NgForm) {
     let item = newitemForm.value as RetroItem;
     item.area = this.areas[this.currentArea]
-    let currentItemCount = this.retroItems.length;
-    item.id = this.retroItems.length + 1;
-    if (this.retroItems.length > 0) {
-      item.id = Math.max(item.id, this.retroItems.slice(-1)[0].id + 1);
+    let currentItemCount = this.composerService.drafts.length;
+    item.id = currentItemCount + 1;
+    if (currentItemCount > 0) {
+      item.id = Math.max(item.id, this.composerService.drafts.slice(-1)[0].id + 1);
     }
     this.composerService.addDraft(item);
-    //this.retroItems.push(item);
     newitemForm.reset();
   }
 
   removeItem(item: RetroItem) {
-    //this.retroItems = this.retroItems.filter(item => item.id != id);
     this.composerService.removeDraft(item);
   }
 

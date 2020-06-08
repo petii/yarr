@@ -1,4 +1,3 @@
-<div class="sidebar">
   <div class="form-group add-new-retro-item">
     <form #newItemForm="ngForm" (submit)="addItem(newItemForm)">
       <!--<div *ngFor="let area of areas">
@@ -16,18 +15,19 @@
   </div>
   <div class="list-group">
     <div class="list-group-item list-group-item-action" *ngFor="let item of retroItems">
-      <div class="container row">
-        <div class="col">
-          <span class="badge badge-info">{{item.area}}</span>
-          {{item.text}}
-        </div>
-        <div class="col-2">
-          <button class="btn btn-success" type="button" (click)="publishItem(item.id)">Publish</button>
-        </div>
-        <div class="col-1">
-          <button class="btn btn-danger" type="button" (click)="removeItem(item.id)">X</button>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12 col-md">
+            <span class="badge badge-info">{{item.area}}</span>
+            {{item.text}}
+          </div>
+          <div class="col-8 col-md-auto">
+            <button class="btn btn-block btn-success" type="button" (click)="publishItem(item.id)">Publish</button>
+          </div>
+          <div class="col-4 col-md-auto">
+            <button class="btn btn-block btn-danger" type="button" (click)="removeItem(item.id)">X</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>

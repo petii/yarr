@@ -11,7 +11,7 @@ export class BoardComponent {
   @Input() areas: string[];
   @Input() items: PublishedRetroItem[];
 
-  public retroBoard = new Map<string, string[]>();
+  public retroBoard = new Map<string, DisplayedRetroItem[]>();
 
   processRetroItems() {
     // whatever happened to optional chaining
@@ -20,10 +20,13 @@ export class BoardComponent {
     }
     if (this.items) {
       this.items.forEach(item => {
-        if (this.retroBoard.has(item.area)) this.retroBoard.get(item.area).push(item.text);
+        if (this.retroBoard.has(item.area)) this.retroBoard.get(item.area).push({text: item.text , user: item.author});
       });
     }
   }
+}
 
-  
+interface DisplayedRetroItem {
+  text: string;
+  user?: string;
 }

@@ -7,7 +7,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
   templateUrl: './setup.component.html'
 })
 export class SetupComponent {
-  setupForm: FormGroup;
+  setupForm: FormGroup = this.fb.group({
+    votes: 3,
+    areas: this.fb.array(['glad','sad']),
+  });;
 
   constructor(
     private http: HttpClient, @Inject('BASE_URL')

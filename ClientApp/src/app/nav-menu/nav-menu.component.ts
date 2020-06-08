@@ -9,9 +9,8 @@ import { UsernameService } from '../services/username.service';
 })
 export class NavMenuComponent {
   isExpanded: boolean = false;
-  public user: string = 'user';
 
-  constructor(private usernameService: UsernameService) {}
+  constructor(public usernameService: UsernameService) {}
 
   collapse() {
     this.isExpanded = false;

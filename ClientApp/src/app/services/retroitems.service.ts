@@ -47,6 +47,7 @@ export interface PublishedRetroItem {
   area: string;
   text: string;
   group?: Group;
+  author?: string;
 }
 
 export interface UpdateType {

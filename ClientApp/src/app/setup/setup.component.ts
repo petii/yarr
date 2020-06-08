@@ -33,7 +33,7 @@ export class SetupComponent {
     });
     let body = JSON.stringify(this.setupForm.value);
     console.log(`sent: ${body}`);
-    this.http.put(this.baseUrl + 'api/retro/setup', body, { headers: headers }).subscribe(val => console.log(`got: ${val}`));
+    this.http.post(this.baseUrl + 'api/retro/setup', body, { headers: headers }).subscribe(val => console.log(`got: ${val}`));
   }
 
   removeArea(id: number) {

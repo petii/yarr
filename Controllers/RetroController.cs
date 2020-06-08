@@ -43,9 +43,10 @@ namespace YetAnotherRetroRegulator.Controllers
     }
 
     [Route("setup")]
-    [HttpPut]
+    [HttpPost]
     public /*async*/ ActionResult<RetroSetup> PutSetup([FromBody] RetroSetup value)
     {
+      Retro.Reset();
       Retro.Areas = value.Areas.ToList();
       Retro.AvailableVotes = value.Votes;
       return value;

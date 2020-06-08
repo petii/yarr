@@ -10,6 +10,10 @@ namespace YetAnotherRetroRegulator.Data
   {
     public RetroData()
     {
+      Reset();
+    }
+    public void Reset()
+    {
       LastPublished = DateTime.Now;
       Areas = new List<string>();
       Items = new List<RetroItem>();

@@ -14,7 +14,7 @@
     </form>
   </div>
   <div class="list-group">
-    <div class="list-group-item list-group-item-action" *ngFor="let item of retroItems">
+    <div class="list-group-item list-group-item-action" *ngFor="let item of composerService.getDrafts()">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12 col-md">
@@ -22,10 +22,10 @@
             {{item.text}}
           </div>
           <div class="col-8 col-md-auto">
-            <button class="btn btn-block btn-success" type="button" (click)="publishItem(item.id)">Publish</button>
+            <button class="btn btn-block btn-success" type="button" (click)="publishItem(item)">Publish</button>
           </div>
           <div class="col-4 col-md-auto">
-            <button class="btn btn-block btn-danger" type="button" (click)="removeItem(item.id)">X</button>
+            <button class="btn btn-block btn-danger" type="button" (click)="removeItem(item)">X</button>
           </div>
         </div>
       </div>

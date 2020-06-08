@@ -19,7 +19,7 @@ export class ComposerService {
   }
 
   removeDraft(item: RetroItem) {
-
+    this.drafts = this.drafts.filter(element => element.id != item.id);
   }
 
 }

@@ -33,25 +33,25 @@ export class ComposerComponent {
     if (this.retroItems.length > 0) {
       item.id = Math.max(item.id, this.retroItems.slice(-1)[0].id + 1);
     }
-    this.retroItems.push(item);
+    this.composerService.addDraft(item);
+    //this.retroItems.push(item);
     newitemForm.reset();
   }
 
-  removeItem(id: number) {
-    this.retroItems = this.retroItems.filter(item => item.id != id);
+  removeItem(item: RetroItem) {
+    //this.retroItems = this.retroItems.filter(item => item.id != id);
+    this.composerService.removeDraft(item);
   }
 
-  publishItem(id: number) {
-    let tmp = this.retroItems.filter(item_ => item_.id == id)[0];
-
+  publishItem(item: RetroItem) {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    let publishedItem: PublishedRetroItem = { id: -1, area: tmp.area, text: tmp.text, author: this.usernameService.changed ? this.usernameService.username : '' };
+    let publishedItem: PublishedRetroItem = { id: -1, area: item.area, text: item.text, author: this.usernameService.changed ? this.usernameService.username : '' };
     console.log(JSON.stringify(publishedItem));
     // TODO: error case
     this.http.post(`${this.baseUrl}api/retro/publish`, JSON.stringify(publishedItem), { headers: headers }).subscribe(result => {
-      this.removeItem(id);
+      this.removeItem(item);
     });
   }
 }

@@ -14,9 +14,11 @@ export class SetupComponent {
     private baseUrl: string,
     private fb: FormBuilder
   ) {
-    this.setupForm = this.fb.group({
-      votes: 5,
-      areas: this.fb.array([this.fb.control('glad'), this.fb.control('sad')])
+    this.http.get<RetroSetup>(`${this.baseUrl}api/retro/setup`).subscribe(result => {
+      this.setupForm = this.fb.group({
+        votes: result.votes,
+        areas: this.fb.array(result.areas),
+      });
     });
   }
 

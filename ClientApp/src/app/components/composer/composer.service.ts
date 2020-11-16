@@ -12,8 +12,15 @@ export class ComposerService {
 
   fetchDraftCookies() {
     var rawCookies = document.cookie;
+    if (rawCookies.length == 0) { return; }
+
     var cookedCookies = rawCookies.split(';').map(item => item.split('='))
-    var jsonDrafts = cookedCookies.find(element => element[0] == 'drafts')[1];
+    if (cookedCookies.length == 0) { return; }
+
+    var draftCookie = cookedCookies.find(element => element[0] == 'drafts');
+    if (draftCookie === undefined) { return; }
+
+    var jsonDrafts = draftCookie[1];
     console.log(jsonDrafts);
     this.drafts = JSON.parse(jsonDrafts);
   }

@@ -21,6 +21,9 @@ export class ComposerComponent {
     private usernameService: UsernameService,
     public composerService: ComposerService,
   ) {
+    if (composerService.drafts.length == 0) {
+      composerService.fetchDraftCookies()
+    }
   }
 
   addItem(newitemForm: NgForm) {

@@ -31,3 +31,10 @@ code {
 .group-selector {
   margin-bottom: 0px;
 }
+
+.container,
+.container-fluid {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: unset;
+}

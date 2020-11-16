@@ -1,33 +1,48 @@
-  <div class="form-group add-new-retro-item">
-    <form #newItemForm="ngForm" (submit)="addItem(newItemForm)">
-      <!--<div *ngFor="let area of areas">
-        <input type="radio" name="area" value="{{area}}" id="{{area}}" ngModel required>
-        <label for="{{area}}">{{area}}</label>
-      </div>-->
-      <div class="btn-group btn-group-toggle" data-toggle="buttons">
-        <label class="btn" *ngFor="let area of areas; index as i" [ngClass]="i == currentArea ? 'btn-primary active' : 'btn-secondary'">
-          <input type="radio" name="options" id="option1" autocomplete="off" (click)="currentArea = i">{{area}}
-        </label>
-      </div>
-      <textarea class="form-control" name="text" ngModel required></textarea>
-      <input class="btn btn-primary btn-lg btn-block" type="submit" />
-    </form>
+<div class="list-group-flush">
+  <div class="list-group-item">
+    <h2>Your Retro Items</h2>
   </div>
-  <div class="list-group">
-    <div class="list-group-item list-group-item-action" *ngFor="let item of composerService.drafts">
+  <div *ngFor="let item of composerService.drafts; index as i" class="list-group-item container">
+    <div *ngIf="editingMode(i)">
+      <div class="row">
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label class="btn" *ngFor="let area of areas; index as i" [ngClass]="area == item.area ? 'btn-primary active' : 'btn-secondary'">
+            <input type="radio" name="options" id="option1" autocomplete="off" (click)="item.area = area">{{area}}
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <textarea class="form-control" id="{{'text' + i}}">{{item.text}}</textarea>
+        </div>
+        <div class="col">
+          <button class="btn btn-block btn-secondary" type="button" (click)="doneEdit(i)">Done Editing</button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!editingMode(i)">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12 col-md">
             <span class="badge badge-info">{{item.area}}</span>
             {{item.text}}
           </div>
-          <div class="col-8 col-md-auto">
+          <div class="col-md-auto">
             <button class="btn btn-block btn-success" type="button" (click)="publishItem(item)">Publish</button>
           </div>
-          <div class="col-4 col-md-auto">
+          <div class="col-md-auto">
+            <button class="btn btn-block btn-info" type="button" (click)="edit(i)">Edit</button>
+          </div>
+          <div class="col-md-auto">
             <button class="btn btn-block btn-danger" type="button" (click)="removeItem(item)">X</button>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <div class="list-group-item">
+    <button class="btn btn-primary btn-lg btn-block" type="button" (click)="addAnother()">
+      Add Another
+    </button>
+  </div>
+</div>

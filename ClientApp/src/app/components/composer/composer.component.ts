@@ -16,6 +16,8 @@ export class ComposerComponent {
 
   public currentArea: number = 0;
 
+  public editing: number[] = [];
+
   constructor(
     private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
     private usernameService: UsernameService,
@@ -24,6 +26,7 @@ export class ComposerComponent {
     if (composerService.drafts.length == 0) {
       composerService.fetchDraftCookies()
     }
+
   }
 
   addItem(newitemForm: NgForm) {
@@ -52,5 +55,25 @@ export class ComposerComponent {
     this.http.post(`${this.baseUrl}api/retro/publish`, JSON.stringify(publishedItem), { headers: headers }).subscribe(result => {
       this.removeItem(item);
     });
+  }
+
+  addAnother() {
+    this.editing.push(this.composerService.addEmpty());
+  }
+
+  edit(index: number) { this.editing.push(index); }
+
+  doneEdit(index: number) {
+    var textArea: HTMLTextAreaElement = document.getElementById('text' + index) as HTMLTextAreaElement;
+    var newText = textArea.value;
+    console.log(newText);
+    this.composerService.drafts[index].text = newText;
+    this.editing = this.editing.filter(item => item != index);
+
+    this.composerService.pushDraftCookies();
+  }
+
+  public editingMode(index: number): boolean {
+    return this.editing.find(item => item == index) !== undefined;
   }
 }

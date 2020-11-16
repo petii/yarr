@@ -14,17 +14,27 @@ export class ComposerService {
     var rawCookies = document.cookie;
     var cookedCookies = rawCookies.split(';').map(item => item.split('='))
     var jsonDrafts = cookedCookies.find(element => element[0] == 'drafts')[1];
-
+    console.log(jsonDrafts);
     this.drafts = JSON.parse(jsonDrafts);
+  }
+
+  pushDraftCookies() {
+    document.cookie = "drafts=" + JSON.stringify(this.drafts);
   }
 
   addDraft(item: RetroItem) {
     this.drafts.push(item);
-    document.cookie = "drafts=" + JSON.stringify(this.drafts);
+    this.pushDraftCookies();
   }
 
   removeDraft(item: RetroItem) {
     this.drafts = this.drafts.filter(element => element.id != item.id);
-    document.cookie = "drafts=" + JSON.stringify(this.drafts);
+    this.pushDraftCookies();
+  }
+
+  addEmpty(): number {
+    var newIndex = this.drafts.length;
+    this.drafts.push({ id: newIndex, area: "", text: "" });
+    return newIndex;
   }
 }

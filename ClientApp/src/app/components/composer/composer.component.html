@@ -27,14 +27,10 @@
             <span class="badge badge-info">{{item.area}}</span>
             {{item.text}}
           </div>
-          <div class="col-md-auto">
-            <button class="btn btn-block btn-success" type="button" (click)="publishItem(item)">Publish</button>
-          </div>
-          <div class="col-md-auto">
-            <button class="btn btn-block btn-info" type="button" (click)="edit(i)">Edit</button>
-          </div>
-          <div class="col-md-auto">
-            <button class="btn btn-block btn-danger" type="button" (click)="removeItem(item)">X</button>
+          <div class="col btn-group">
+            <button class="btn btn-success" type="button" (click)="publishItem(item)">Publish</button>
+            <button class="btn btn-info" type="button" (click)="edit(i)">Edit</button>
+            <button class="btn btn-danger" type="button" (click)="removeItem(item)">X</button>
           </div>
         </div>
       </div>

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -42,6 +41,7 @@ namespace YetAnotherRetroRegulator
                 app.UseExceptionHandler("/Error");
             }
 
+            // app.UseDefaultFiles();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {
@@ -49,7 +49,7 @@ namespace YetAnotherRetroRegulator
             }
 
             app.UseRouting();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -65,9 +65,9 @@ namespace YetAnotherRetroRegulator
 
                 if (env.IsDevelopment())
                 {
-                    //spa.UseAngularCliServer(npmScript: "start");
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:9000");
-                }
+                //spa.UseAngularCliServer(npmScript: "start");
+                spa.UseProxyToSpaDevelopmentServer("http://localhost:5050");
+              }
             });
         }
     }

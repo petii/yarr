@@ -23,9 +23,16 @@ namespace YetAnotherRetroRegulator.Controllers
 
     // GET: api/<controller>
     [HttpGet]
-    public IEnumerable<string> Get()
+    public RetroData Get()
     {
-      return new string[] { "hello", ",", "world" };
+      return Retro;
+    }
+
+    [Route("started")]
+    [HttpGet]
+    public bool GetStarted()
+    {
+      return Retro.Started;
     }
 
     [Route("lastupdate")]

@@ -14,6 +14,7 @@ namespace YetAnotherRetroRegulator.Data
     }
     public void Reset()
     {
+      Started = false;
       LastPublished = DateTime.Now;
       Areas = new List<string>();
       Items = new List<RetroItem>();
@@ -21,6 +22,8 @@ namespace YetAnotherRetroRegulator.Data
       AvailableVotes = 0;
       Votes = new List<int>();
     }
+
+    public bool Started { get; set; }
 
     public DateTime LastPublished { get; set; }
 

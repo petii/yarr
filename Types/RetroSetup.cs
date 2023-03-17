@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace YetAnotherRetroRegulator.Types
 {
-	public class RetroSetup
-	{
-		public int Votes { get; set; }
-		public string[] Areas { get; set; }
-	}
+    public class RetroSetup
+    {
+        public int Votes { get; set; }
+        public string[] Areas { get; set; }
+    }
 }

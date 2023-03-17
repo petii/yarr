@@ -12,108 +12,108 @@ using YetAnotherRetroRegulator.Types;
 
 namespace YetAnotherRetroRegulator.Controllers
 {
-  [Route("api/[controller]")]
-  public class RetroController : Controller
-  {
-    private RetroData Retro;
-    public RetroController(RetroData retroData)
+    [Route("api/[controller]")]
+    public class RetroController : Controller
     {
-      Retro = retroData;
-    }
-
-    // GET: api/<controller>
-    [HttpGet]
-    public RetroData Get()
-    {
-      return Retro;
-    }
-
-    [Route("started")]
-    [HttpGet]
-    public bool GetStarted()
-    {
-      return Retro.Started;
-    }
-
-    [Route("lastupdate")]
-    [HttpGet]
-    public /*async*/ DateTime GetLastPublished()
-    {
-      return Retro.LastPublished;
-    }
-
-    [Route("setup")]
-    [HttpGet]
-    public /*async*/ RetroSetup GetSetup()
-    {
-      return new RetroSetup() { Areas = Retro.Areas.ToArray(), Votes = Retro.AvailableVotes };
-    }
-
-    [Route("setup")]
-    [HttpPost]
-    public /*async*/ ActionResult<RetroSetup> PutSetup([FromBody] RetroSetup value)
-    {
-      Retro.Reset();
-      Retro.Areas = value.Areas.ToList();
-      Retro.AvailableVotes = value.Votes;
-      return value;
-    }
-
-    [Route("publish")]
-    [HttpPost]
-    public /*async*/ ActionResult<RetroItem> PublishItem([FromBody] RetroItem value)
-    {
-      value.Id = Retro.Items.Count;
-      Retro.Items.Add(value);
-      Retro.LastPublished = DateTime.Now;
-      return value;
-    }
-
-    [Route("items")]
-    [HttpGet]
-    public /*async*/ Update GetItems()
-    {
-      return new Update(Retro.LastPublished, Retro.Items.ToArray());
-    }
-
-    [Route("items")]
-    [HttpPatch]
-    public /*async*/ bool SetGroup([FromBody] RetroItem[] items)
-    {
-      foreach (RetroItem data in items)
-      {
-        if (data.Group != null && data.Group.Id == null)
+        private RetroData Retro;
+        public RetroController(RetroData retroData)
         {
-          data.Group.Id = Retro.Groups.Count + 1;
-          Retro.Groups.Add(data.Group);
+            Retro = retroData;
         }
-        else if (data.Group != null)
+
+        // GET: api/<controller>
+        [HttpGet]
+        public RetroData Get()
         {
-          Retro.Groups.Find(item => item.Id == data.Group.Id).Name = data.Group.Name;
+            return Retro;
         }
-        Retro.Items.Find(item => item.Id == data.Id).Group = data.Group;
-      }
-      Retro.LastPublished = DateTime.Now;
-      return true;
-    }
 
-    [Route("vote")]
-    [HttpPost]
-    public /*async*/ int[] Vote([FromBody] int[] votes)
-    {
-      Retro.Votes.AddRange(votes);
-      Retro.LastPublished = DateTime.Now;
-      return votes;
-    }
+        [Route("started")]
+        [HttpGet]
+        public bool GetStarted()
+        {
+            return Retro.Started;
+        }
 
-    [Route("votes")]
-    [HttpGet]
-    public /*async*/ VoteUpdate GetVotes()
-    {
-      var data = new VoteUpdate();
-      data.Timestamp = Retro.LastPublished;
-      data.Votes = Retro.Votes.ToArray();
-      return data;
+        [Route("lastupdate")]
+        [HttpGet]
+        public /*async*/ DateTime GetLastPublished()
+        {
+            return Retro.LastPublished;
+        }
+
+        [Route("setup")]
+        [HttpGet]
+        public /*async*/ RetroSetup GetSetup()
+        {
+            return new RetroSetup() { Areas = Retro.Areas.ToArray(), Votes = Retro.AvailableVotes };
+        }
+
+        [Route("setup")]
+        [HttpPost]
+        public /*async*/ ActionResult<RetroSetup> PutSetup([FromBody] RetroSetup value)
+        {
+            Retro.Reset();
+            Retro.Areas = value.Areas.ToList();
+            Retro.AvailableVotes = value.Votes;
+            return value;
+        }
+
+        [Route("publish")]
+        [HttpPost]
+        public /*async*/ ActionResult<RetroItem> PublishItem([FromBody] RetroItem value)
+        {
+            value.Id = Retro.Items.Count;
+            Retro.Items.Add(value);
+            Retro.LastPublished = DateTime.Now;
+            return value;
+        }
+
+        [Route("items")]
+        [HttpGet]
+        public /*async*/ Update GetItems()
+        {
+            return new Update(Retro.LastPublished, Retro.Items.ToArray());
+        }
+
+        [Route("items")]
+        [HttpPatch]
+        public /*async*/ bool SetGroup([FromBody] RetroItem[] items)
+        {
+            foreach (RetroItem data in items)
+            {
+                if (data.Group != null && data.Group.Id == null)
+                {
+                    data.Group.Id = Retro.Groups.Count + 1;
+                    Retro.Groups.Add(data.Group);
+                }
+                else if (data.Group != null)
+                {
+                    Retro.Groups.Find(item => item.Id == data.Group.Id).Name = data.Group.Name;
+                }
+                Retro.Items.Find(item => item.Id == data.Id).Group = data.Group;
+            }
+            Retro.LastPublished = DateTime.Now;
+            return true;
+        }
+
+        [Route("vote")]
+        [HttpPost]
+        public /*async*/ int[] Vote([FromBody] int[] votes)
+        {
+            Retro.Votes.AddRange(votes);
+            Retro.LastPublished = DateTime.Now;
+            return votes;
+        }
+
+        [Route("votes")]
+        [HttpGet]
+        public /*async*/ VoteUpdate GetVotes()
+        {
+            var data = new VoteUpdate();
+            data.Timestamp = Retro.LastPublished;
+            data.Votes = Retro.Votes.ToArray();
+            return data;
+        }
     }
-  }
 }

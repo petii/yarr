@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace YetAnotherRetroRegulator.Types
 {
-  public class RetroItem
-  {
-    public int Id { get; set; }
-    public string Area { get; set; }
-    public string Text { get; set; }
-    public string Author { get; set; }
-    public GroupType Group { get; set; }
+    public class RetroItem
+    {
+        public int Id { get; set; }
+        public string Area { get; set; }
+        public string Text { get; set; }
+        public string Author { get; set; }
+        public GroupType Group { get; set; }
 
-  }
+    }
 }

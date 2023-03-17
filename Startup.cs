@@ -49,7 +49,7 @@ namespace YetAnotherRetroRegulator
             }
 
             app.UseRouting();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -65,9 +65,9 @@ namespace YetAnotherRetroRegulator
 
                 if (env.IsDevelopment())
                 {
-                //spa.UseAngularCliServer(npmScript: "start");
-                spa.UseProxyToSpaDevelopmentServer("http://localhost:5050");
-              }
+                    //spa.UseAngularCliServer(npmScript: "start");
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:5050");
+                }
             });
         }
     }

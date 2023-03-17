@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace YetAnotherRetroRegulator.Types
 {
-  public class VoteUpdate
-  {
-    public DateTime Timestamp { get; set; }
-    public int[] Votes { get; set; }
-  }
+    public class VoteUpdate
+    {
+        public DateTime Timestamp { get; set; }
+        public int[] Votes { get; set; }
+    }
 }
